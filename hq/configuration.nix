@@ -106,7 +106,7 @@
     pv
     calibre
     onedrive
-    transmission
+    xournalpp
   ];
 
   virtualisation = {

@@ -99,7 +99,8 @@
   environment.systemPackages = with pkgs; [
     git wget
     mullvad-vpn
-    (import ../shared/vim.nix)
+    # (import ../shared/vim.nix)
+    neovim
     virt-manager
     tmux
     zoom-us

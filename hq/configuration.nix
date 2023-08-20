@@ -164,13 +164,9 @@
   # flatpak install flathub org.signal.Signal
   # flatpak install flathub com.amazon.Workspaces
 
-  programs.tmux = {
-    enable = true;
-    extraConfig = ''
-      run-shell ${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/resurrect.tmux
-      run-shell ${pkgs.tmuxPlugins.continuum}/share/tmux-plugins/continuum/continuum.tmux
-      set -g @continuum-restore 'on'
-    '';
+  programs.neovim = {
+    viAlias = true;
+    vimAlias = true;
   };
 
   networking.extraHosts =

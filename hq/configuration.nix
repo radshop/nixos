@@ -100,9 +100,7 @@
     git wget
     mullvad-vpn
     # (import ../shared/vim.nix)
-    neovim
     virt-manager
-    tmux
     zoom-us
     pv
     calibre
@@ -164,7 +162,11 @@
   # flatpak install flathub org.signal.Signal
   # flatpak install flathub com.amazon.Workspaces
 
+  programs.tmux.enable = true;
+
   programs.neovim = {
+    enable = true;
+    defaultEditor = true;
     viAlias = true;
     vimAlias = true;
   };

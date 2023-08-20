@@ -106,6 +106,7 @@
     pv
     calibre
     onedrive
+    transmission
   ];
 
   virtualisation = {

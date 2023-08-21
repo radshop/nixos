@@ -31,6 +31,7 @@
         vim-fugitive
         vimoutliner
         vim-surround
+        vim-obsession
       ];
     settings = { ignorecase = true; };
     extraConfig = ''

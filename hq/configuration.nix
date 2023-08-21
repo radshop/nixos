@@ -79,7 +79,6 @@
     ];
   };
   home-manager = {
-    useUserPackages = true;
     users.miscguy = import ./home.nix;
   };
 

@@ -3,7 +3,7 @@
 {
   home.username = "miscguy";
   home.homeDirectory = "/home/miscguy";
-  home.stateVersion = "22.11";
+  home.stateVersion = "23.05";
   nixpkgs.config.allowUnfree = true;
   home.packages = with pkgs; [
     firefox librewolf brave chromium
@@ -48,5 +48,17 @@
       set timeoutlen=3000
       set backspace=indent,eol,start " fully enbled backspace
     '';
+  };
+
+  programs.tmux = {
+    enable = true;
+    plugins = with pkgs;
+    [ tmuxPlugins.sensible
+      tmuxPlugins.resurrect
+      tmuxPlugins.continuum
+    ];
+    extraConfig = ''
+      set -g @continuum-restore 'on'
+      '';
   };
 }

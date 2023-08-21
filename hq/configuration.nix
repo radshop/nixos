@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      <home-manager/nixos>
     ];
 
 
@@ -77,6 +78,11 @@
       firefox librewolf brave chromium
     #  thunderbird
     ];
+  };
+  home-manager.users.miscguy = { pkgs, ... }: {
+    home.stateVersion = "23.11";
+    home.packages = [ pkgs.atool pkgs.httpie ];
+    programs.bash.enable = true;
   };
 
   security.sudo.extraRules = [

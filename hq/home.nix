@@ -7,8 +7,13 @@
   nixpkgs.config.allowUnfree = true;
   home.packages = with pkgs; [
     firefox librewolf brave chromium
-    mfcj6510dwlpr
   ];
+
+  programs.git = {
+    enable = true;
+    userName = "radshop";
+    userEmail = "myron@radshop.com";
+  };
 
   programs.vim = {
     enable = true;

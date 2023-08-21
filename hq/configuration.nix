@@ -102,7 +102,7 @@
   environment.systemPackages = with pkgs; [
     git wget
     mullvad-vpn
-    # (import ../shared/vim.nix)
+    (import ../shared/vim.nix)
     virt-manager
     zoom-us
     pv
@@ -166,13 +166,6 @@
   # flatpak install flathub com.amazon.Workspaces
 
   programs.tmux.enable = true;
-
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
-  };
 
   networking.extraHosts =
     ''

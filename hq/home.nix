@@ -9,6 +9,15 @@
     firefox librewolf brave chromium
   ];
 
+  programs.bash = {
+    enable = true;
+    bashrcExtra = ''
+      function conda-shell {
+          nix-shell ~/.conda-shell.nix
+      }
+    '';
+  };
+
   programs.git = {
     enable = true;
     userName = "radshop";

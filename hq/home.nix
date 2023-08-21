@@ -55,10 +55,13 @@
     plugins = with pkgs;
     [ tmuxPlugins.sensible
       tmuxPlugins.resurrect
-      tmuxPlugins.continuum
+      {
+        plugin = tmuxPlugins.continuum;
+        extraConfig = ''
+          set -g @continuum-restore 'on'
+          set -g @continuum-boot 'on'
+          '';
+        }
     ];
-    extraConfig = ''
-      set -g @continuum-restore 'on'
-      '';
   };
 }

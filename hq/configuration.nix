@@ -163,8 +163,6 @@
   services.flatpak.enable = true;
   # -->  sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
-  programs.tmux.enable = true;
-
   networking.extraHosts =
     ''
       172.17.0.2 sql1

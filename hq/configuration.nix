@@ -79,10 +79,10 @@
     #  thunderbird
     ];
   };
-  home-manager.users.miscguy = { pkgs, ... }: {
-    home.stateVersion = "23.11";
-    home.packages = [ pkgs.atool pkgs.httpie ];
-    programs.bash.enable = true;
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    users.miscguy = import ./home.nix;
   };
 
   security.sudo.extraRules = [

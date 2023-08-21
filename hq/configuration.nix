@@ -45,9 +45,6 @@
   };
 
 
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
   # Enable sound with pipewire.
   sound.enable = true;
   hardware.pulseaudio.enable = false;
@@ -127,6 +124,9 @@
       eval $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh);
       export SSH_AUTH_SOCK;
   '';
+
+  # Enable CUPS to print documents.
+  services.printing.enable = true;
 
   services.postgresql = {
     enable = true;

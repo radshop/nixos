@@ -11,7 +11,6 @@
       <home-manager/nixos>
     ];
 
-
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -71,9 +70,9 @@
     isNormalUser = true;
     description = "miscguy";
     extraGroups = [ "networkmanager" "wheel" "libvirtd" "docker" "miscguy"];
-    packages = with pkgs; [
-      firefox librewolf brave chromium
-    ];
+    # packages = with pkgs; [
+    #   firefox librewolf brave chromium
+    # ];
   };
   home-manager = {
     users.miscguy = import ./home.nix;
@@ -99,7 +98,7 @@
   environment.systemPackages = with pkgs; [
     git wget
     mullvad-vpn
-    (import ../shared/vim.nix)
+    # (import ../shared/vim.nix)
     virt-manager
     zoom-us
     pv
@@ -159,11 +158,9 @@
       configDir = "/home/miscguy/.config/syncthing";   # Folder for Syncthing's settings and keys
   };
 
-  # flatpaks
+  # flatpak
   services.flatpak.enable = true;
-  # sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-  # flatpak install flathub org.signal.Signal
-  # flatpak install flathub com.amazon.Workspaces
+  # -->  sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
   programs.tmux.enable = true;
 
@@ -171,7 +168,6 @@
     ''
       172.17.0.2 sql1
     '';
-
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

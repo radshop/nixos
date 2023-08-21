@@ -74,9 +74,11 @@
     isNormalUser = true;
     description = "miscguy";
     extraGroups = [ "networkmanager" "wheel" "libvirtd" "docker" "miscguy"];
+    packages = with pkgs; [
+      firefox librewolf brave chromium
+    ];
   };
   home-manager = {
-    useGlobalPkgs = true;
     useUserPackages = true;
     users.miscguy = import ./home.nix;
   };

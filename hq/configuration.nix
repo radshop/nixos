@@ -74,10 +74,6 @@
     isNormalUser = true;
     description = "miscguy";
     extraGroups = [ "networkmanager" "wheel" "libvirtd" "docker" "miscguy"];
-    packages = with pkgs; [
-      firefox librewolf brave chromium
-    #  thunderbird
-    ];
   };
   home-manager = {
     useGlobalPkgs = true;

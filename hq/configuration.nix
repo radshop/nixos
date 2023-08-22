@@ -106,7 +106,6 @@
     calibre
     # onedrive
     xournalpp
-    unixODBCDrivers.msodbcsql17
   ];
 
   virtualisation = {

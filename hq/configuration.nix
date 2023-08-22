@@ -96,10 +96,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    # git 
     wget
     mullvad-vpn
-    # (import ../shared/vim.nix)
     virt-manager
     zoom-us
     pv

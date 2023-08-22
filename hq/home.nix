@@ -17,6 +17,9 @@
           nix-shell ~/.conda-shell.nix
       }
     '';
+    profileExtra = ''
+      docker start sql1
+    '';
   };
 
   programs.git = {

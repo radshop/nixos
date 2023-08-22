@@ -58,6 +58,9 @@
       let mapleader = "\\"
       set timeoutlen=3000
       set backspace=indent,eol,start " fully enbled backspace
+      if has("autocmd")
+        au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+      endif
     '';
   };
 

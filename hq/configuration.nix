@@ -138,7 +138,7 @@
     host    all             all             ::1/128                 trust
     '';
   };
-  services.onedrive.enable = false;
+  services.onedrive.enable = true;
   services.mullvad-vpn.enable = true;
   services.xserver = {
     # Configure keymap in X11

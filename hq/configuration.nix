@@ -104,7 +104,7 @@
     zoom-us
     pv
     calibre
-    onedrive
+    # onedrive
     xournalpp
   ];
 

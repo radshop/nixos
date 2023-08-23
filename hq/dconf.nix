@@ -149,7 +149,7 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/shell" = {
-      favorite-apps = [ "org.gnome.Console.desktop" "org.gnome.Nautilus.desktop" "chromium-browser.desktop" "brave-browser.desktop" "firefox.desktop" "librewolf.desktop" "mullvad-vpn.desktop" "org.gnome.Settings.desktop" "virt-manager.desktop" "com.amazon.Workspaces.desktop" ];
+      favorite-apps = [ "org.gnome.Console.desktop" "org.gnome.Nautilus.desktop" "chromium-browser.desktop" "brave-browser.desktop" "firefox.desktop" "librewolf.desktop" "mullvad-vpn.desktop" "org.gnome.Settings.desktop" "virt-manager.desktop" "com.amazon.Workspaces.desktop" "org.gnome.TextEditor.desktop" ];
       last-selected-power-profile = "performance";
       welcome-dialog-last-shown-version = "44.2";
     };

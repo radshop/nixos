@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 
 {
+  imports = [ ./dconf.nix ];
   home.username = "miscguy";
   home.homeDirectory = "/home/miscguy";
   home.stateVersion = "23.05";

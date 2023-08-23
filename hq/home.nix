@@ -10,6 +10,7 @@
     firefox librewolf brave chromium
     logseq
     libreoffice-fresh
+    joplin-desktop
   ];
 
   programs.bash = {

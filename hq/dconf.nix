@@ -159,7 +159,7 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/shell/overrides" = {
-      button-layout = "maximize, minimize, close:";
+      button-layout = "close,minimize,maximize:";
     };
 
     "org/gnome/software" = {

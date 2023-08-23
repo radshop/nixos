@@ -104,7 +104,7 @@
     calibre
     # onedrive
     xournalpp
-    gnome3.gnome-tweaks
+    gnome.gnome-tweaks
   ];
 
   virtualisation = {

@@ -97,7 +97,7 @@ with lib.hm.gvariant;
     };
 
     "org/gnome/desktop/wm/preferences" = {
-      num-workspaces = 1;
+      num-workspaces = 2;
     };
 
     "org/gnome/epiphany" = {

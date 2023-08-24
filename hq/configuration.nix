@@ -104,6 +104,7 @@
     calibre
     # onedrive
     xournalpp
+    pw-volume
   ];
 
   virtualisation = {
@@ -146,12 +147,18 @@
     enable = true;
     # displaylink
     videoDrivers = [ "displaylink" "modesetting" ];
-    # Enable the GNOME Desktop Environment.
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
     displayManager.sessionCommands = ''
       ${lib.getBin pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
     '';
+		# XFCE
+    desktopManager = {
+      xterm.enable = false;
+      xfce.enable = true;
+    };
+    displayManager.defaultSession = "xfce";
+    # Enable the GNOME Desktop Environment.
+    #displayManager.gdm.enable = true;
+    #desktopManager.gnome.enable = true;
   };
   services.syncthing = {
       enable = true;
@@ -161,6 +168,10 @@
   };
 
   # flatpak
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  };
   services.flatpak.enable = true;
   # -->  sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 

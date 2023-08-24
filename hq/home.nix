@@ -73,7 +73,6 @@
   programs.tmux = {
     enable = true;
     plugins = with pkgs.tmuxPlugins; [
-      sensible
       resurrect
       {
         plugin = resurrect;
@@ -94,5 +93,8 @@
           '';
       }
     ];
+    extraConfig = ''
+      bind-key r source-file ~/.config/tmux/tmux.conf \; display-message "~/.tmux.conf reloaded."
+    '';
   };
 }

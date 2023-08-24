@@ -102,9 +102,7 @@
     zoom-us
     pv
     calibre
-    # onedrive
     xournalpp
-    pw-volume
   ];
 
   virtualisation = {
@@ -151,14 +149,15 @@
       ${lib.getBin pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
     '';
 		# XFCE
-    desktopManager = {
-      xterm.enable = false;
-      xfce.enable = true;
-    };
-    displayManager.defaultSession = "xfce";
+    # desktopManager = {
+    #   xterm.enable = false;
+    #   xfce.enable = true;
+    # };
+    # displayManager.defaultSession = "xfce";
     # Enable the GNOME Desktop Environment.
-    #displayManager.gdm.enable = true;
-    #desktopManager.gnome.enable = true;
+    displayManager.gdm.enable = true;
+    displayManager.defaultSession = "gnome";
+    desktopManager.gnome.enable = true;
   };
   services.syncthing = {
       enable = true;
@@ -168,12 +167,13 @@
   };
 
   # flatpak
-  xdg.portal = {
-    enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-  };
   services.flatpak.enable = true;
   # -->  sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+  # for xfce flatpak
+  # xdg.portal = {
+  #   enable = true;
+  #   extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  # };
 
   networking.extraHosts =
     ''
@@ -206,5 +206,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.05"; # Did you read the comment?
-
 }

@@ -103,7 +103,7 @@
     pv
     calibre
     xournalpp
-    pipecontrol
+    wireplumber
   ];
 
   virtualisation = {

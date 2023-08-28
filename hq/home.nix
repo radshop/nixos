@@ -10,6 +10,7 @@
   home.packages = with pkgs; [
     firefox librewolf brave chromium
     logseq
+    vlc
     libreoffice-fresh
   ];
 

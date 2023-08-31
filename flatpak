@@ -1,0 +1,4 @@
+ sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+ flatpak install flathub org.signal.Signal
+ flatpak install flathub com.amazon.Workspaces
+ flatpak install flathub com.transmissionbt.Transmission

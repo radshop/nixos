@@ -30,7 +30,6 @@
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
-
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "en_US.UTF-8";
     LC_IDENTIFICATION = "en_US.UTF-8";
@@ -42,7 +41,6 @@
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "en_US.UTF-8";
   };
-
 
   # Enable sound with pipewire.
   sound.enable = true;
@@ -62,7 +60,7 @@
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
+  services.xserver.libinput.enable = true;
 
   users.groups.miscguy.members = [ "miscguy" ];
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -109,6 +107,9 @@
       export SSH_AUTH_SOCK;
   '';
 
+  # disable suspend on lid close
+  services.logind.lidSwitch = "ignore";
+
   services.mullvad-vpn.enable = true;
   services.xserver = {
     # Configure keymap in X11
@@ -130,11 +131,6 @@
   # flatpak
   services.flatpak.enable = true;
   # -->  sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-  # for xfce flatpak
-  # xdg.portal = {
-  #   enable = true;
-  #   extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-  # };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

@@ -6,8 +6,8 @@ if [ $retval == 0 ]; then
   pushd /home/miscguy/nixos
   gennbr="$(nix-env --list-generations -p /nix/var/nix/profiles/system | grep current | awk '{print $1}')"
   msg="$HOSTNAME: generation $gennbr"
-  git add .
-  git commit -m "$msg"
-  git push
+  su -c "git add ." miscguy
+  su -c "git commit -m \"$msg\"" miscguy
+  su -c "git push" miscguy
   popd
 fi

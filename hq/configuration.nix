@@ -122,6 +122,13 @@
       eval $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh);
       export SSH_AUTH_SOCK;
   '';
+	services.openssh = {
+		enable = true;
+		# require public key authentication for better security
+		settings.PasswordAuthentication = false;
+		settings.KbdInteractiveAuthentication = false;
+		#settings.PermitRootLogin = "yes";
+	};
 
   # Enable CUPS to print documents.
   services.printing.enable = true;

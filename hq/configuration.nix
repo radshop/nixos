@@ -104,6 +104,7 @@
     calibre
     xournalpp
     wireplumber
+    sqlcmd
   ];
 
   virtualisation = {
@@ -176,12 +177,6 @@
 
   # flatpak
   services.flatpak.enable = true;
-  # -->  sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-  # for xfce flatpak
-  # xdg.portal = {
-  #   enable = true;
-  #   extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-  # };
 
   networking.extraHosts =
     ''

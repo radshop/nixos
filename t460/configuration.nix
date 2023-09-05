@@ -108,7 +108,7 @@
   '';
 
   # disable suspend on lid close
-  services.logind.lidSwitch = "ignore";
+  # services.logind.lidSwitch = "ignore";
 
   services.mullvad-vpn.enable = true;
   services.xserver = {

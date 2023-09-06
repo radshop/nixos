@@ -105,6 +105,7 @@
     xournalpp
     wireplumber
     sqlcmd
+    dbeaver
   ];
 
   virtualisation = {

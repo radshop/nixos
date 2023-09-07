@@ -8,7 +8,7 @@
   home.stateVersion = "23.05";
   nixpkgs.config.allowUnfree = true;
   home.packages = with pkgs; [
-    firefox librewolf brave chromium
+    firefox librewolf brave chromium google-chrome
     logseq
     vlc
     libreoffice-fresh

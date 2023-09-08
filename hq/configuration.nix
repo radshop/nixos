@@ -98,7 +98,7 @@
   environment.systemPackages = with pkgs; [
     wget
     mullvad-vpn
-    virt-manager
+    virt-manager virtiofsd
     zoom-us
     pv
     calibre

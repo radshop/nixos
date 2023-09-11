@@ -12,6 +12,7 @@
     logseq
     vlc
     libreoffice-fresh
+    pdfarranger pdfsandwich
   ];
 
   programs.bash = {

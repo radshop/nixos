@@ -99,6 +99,7 @@
     pv
     calibre
     xournalpp
+    pavucontrol
   ];
 
   # ssh keyring

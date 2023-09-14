@@ -1,5 +1,7 @@
 #! /bin/sh
 
+su -c "flatpak update -y" miscguy
+nix-channel --update
 nixos-rebuild switch
 retval=$?
 if [ $retval == 0 ]; then

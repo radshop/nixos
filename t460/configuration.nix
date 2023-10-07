@@ -102,14 +102,23 @@
     pavucontrol
   ];
 
+  virtualisation = {
+    docker = {
+      enable = true;
+    };
+  };
+
   # ssh keyring
   programs.sway.extraSessionCommands = ''
       eval $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh);
       export SSH_AUTH_SOCK;
   '';
 
-  # disable suspend on lid close
-  # services.logind.lidSwitch = "ignore";
+  services.fprintd = {
+    enable = true;
+    tod.enable = true;
+    tod.driver = pkgs.libfprint-2-tod1-vfs0090;
+  };
 
   services.mullvad-vpn.enable = true;
   services.xserver = {

@@ -13,6 +13,7 @@
     vlc
     libreoffice-fresh
     pdfarranger pdfsandwich
+    gimp-with-plugins
   ];
 
   programs.bash = {

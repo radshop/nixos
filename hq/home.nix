@@ -15,6 +15,7 @@
     pdfarranger pdfsandwich
     gimp-with-plugins
     element-desktop
+    yt-dlp
   ];
 
   programs.bash = {

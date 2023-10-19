@@ -14,6 +14,7 @@
     libreoffice-fresh
     pdfarranger pdfsandwich
     gimp-with-plugins
+    element-desktop
   ];
 
   programs.bash = {

@@ -16,6 +16,7 @@
     gimp-with-plugins
     element-desktop
     yt-dlp
+    obs-studio
   ];
 
   programs.bash = {

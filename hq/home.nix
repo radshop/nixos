@@ -9,7 +9,7 @@
   nixpkgs.config.allowUnfree = true;
   home.packages = with pkgs; [
     firefox librewolf brave chromium google-chrome
-    logseq
+    # logseq
     vlc
     libreoffice-fresh
     pdfarranger pdfsandwich

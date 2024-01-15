@@ -13,6 +13,7 @@
     firefox librewolf brave chromium
     logseq
     vlc
+    libreoffice-fresh
   ];
 
   programs.bash = {

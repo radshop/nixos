@@ -17,6 +17,7 @@
     element-desktop
     yt-dlp
     obs-studio
+    worker
   ];
 
   programs.bash = {

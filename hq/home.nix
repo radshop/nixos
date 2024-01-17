@@ -17,7 +17,7 @@
     element-desktop
     yt-dlp
     obs-studio
-    worker
+    ranger
   ];
 
   programs.bash = {

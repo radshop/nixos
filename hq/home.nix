@@ -18,6 +18,7 @@
     yt-dlp
     obs-studio
     ranger
+    bc # command line calculator
   ];
 
   programs.bash = {

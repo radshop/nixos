@@ -19,6 +19,7 @@
     obs-studio
     ranger
     bc # command line calculator
+    freeplane
   ];
 
   programs.bash = {

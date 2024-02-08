@@ -9,10 +9,11 @@
   nixpkgs.config.allowUnfree = true;
   home.packages = with pkgs; [
     firefox librewolf chromium google-chrome vivaldi
-    brave
+    # brave
     # logseq
     vlc
     libreoffice-fresh
+    thunderbird
     pdfarranger pdfsandwich
     gimp-with-plugins
     element-desktop

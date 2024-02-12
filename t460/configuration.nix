@@ -95,7 +95,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget
-    mullvad-vpn
+    # mullvad-vpn
     pv
     calibre
     xournalpp
@@ -121,7 +121,7 @@
   };
 
   services.tailscale.enable = true;
-  services.mullvad-vpn.enable = true;
+  # services.mullvad-vpn.enable = true;
   services.xserver = {
     # Configure keymap in X11
     layout = "us";

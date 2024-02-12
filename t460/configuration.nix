@@ -100,6 +100,7 @@
     calibre
     xournalpp
     pavucontrol
+    tailscale
   ];
 
   virtualisation = {

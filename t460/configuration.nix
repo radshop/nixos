@@ -120,6 +120,7 @@
     tod.driver = pkgs.libfprint-2-tod1-vfs0090;
   };
 
+  services.tailscale.enable = true;
   services.mullvad-vpn.enable = true;
   services.xserver = {
     # Configure keymap in X11

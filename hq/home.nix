@@ -8,15 +8,20 @@
   home.stateVersion = "23.05";
   nixpkgs.config.allowUnfree = true;
   home.packages = with pkgs; [
-    firefox librewolf brave chromium google-chrome
-    logseq
+    firefox librewolf chromium google-chrome vivaldi
+    # brave
+    # logseq
     vlc
     libreoffice-fresh
+    thunderbird
     pdfarranger pdfsandwich
     gimp-with-plugins
     element-desktop
     yt-dlp
     obs-studio
+    ranger
+    bc # command line calculator
+    freeplane
   ];
 
   programs.bash = {

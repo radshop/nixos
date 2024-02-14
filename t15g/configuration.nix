@@ -98,6 +98,7 @@
   environment.systemPackages = with pkgs; [
     wget
     # mullvad-vpn
+    tailscale
     virt-manager
     zoom-us
     pv
@@ -145,7 +146,7 @@
   };
   services.onedrive.enable = true;
   # services.mullvad-vpn.enable = true;
-  services.tailscale.enable = true;
+  # services.tailscale.enable = true;
   services.xserver = {
     # Configure keymap in X11
     layout = "us";

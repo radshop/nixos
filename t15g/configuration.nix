@@ -97,7 +97,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget
-    # mullvad-vpn
+    mullvad-vpn
     virt-manager
     zoom-us
     pv
@@ -144,8 +144,8 @@
     '';
   };
   services.onedrive.enable = true;
-  # services.mullvad-vpn.enable = true;
-  services.tailscale.enable = true;
+  services.mullvad-vpn.enable = true;
+  # services.tailscale.enable = true;
   services.xserver = {
     # Configure keymap in X11
     layout = "us";
@@ -208,6 +208,8 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
+  system.autoUpgrade.enable = true;
+  system.autoUpgrade.allowReboot = true;
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave

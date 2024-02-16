@@ -11,7 +11,7 @@
   ];
   home.username = "miscguy";
   home.homeDirectory = "/home/miscguy";
-  home.stateVersion = "23.05";
+  home.stateVersion = "23.11";
   nixpkgs.config.allowUnfree = true;
   home.packages = with pkgs; [
     firefox librewolf brave chromium

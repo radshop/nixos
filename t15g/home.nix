@@ -1,7 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  # disable temporarily
   imports = [ 
     ../shared/vim.nix  
     ../shared/tmux.nix  

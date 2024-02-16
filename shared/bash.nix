@@ -1,4 +1,3 @@
-with import <nixpkgs> {};
 {
   programs.bash = {
     enable = true;

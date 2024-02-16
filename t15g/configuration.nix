@@ -148,8 +148,8 @@
   # services.tailscale.enable = true;
   services.xserver = {
     # Configure keymap in X11
-    layout = "us";
-    xkbVariant = "";
+    xkb.layout = "us";
+    xkb.variant = "";
     # Enable the X11 windowing system.
     enable = true;
     # displaylink

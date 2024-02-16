@@ -95,7 +95,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget
-    mullvad-vpn
+    # mullvad-vpn
     pv
     calibre
     xournalpp
@@ -120,8 +120,8 @@
     tod.driver = pkgs.libfprint-2-tod1-vfs0090;
   };
 
-  # services.tailscale.enable = true;
-  services.mullvad-vpn.enable = true;
+  services.tailscale.enable = true;
+  # services.mullvad-vpn.enable = true;
   services.xserver = {
     # Configure keymap in X11
     layout = "us";

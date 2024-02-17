@@ -96,7 +96,6 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget
-    # mullvad-vpn
     pv
     calibre
     xournalpp
@@ -123,7 +122,6 @@
 
   services.tailscale.enable = true;
   services.tailscale.useRoutingFeatures = "client";
-  # services.mullvad-vpn.enable = true;
   services.xserver = {
     # Configure keymap in X11
     layout = "us";
@@ -142,7 +140,7 @@
   };
 
   # flatpak
-  services.flatpak.enable = true;
+  # services.flatpak.enable = true;
   # -->  sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
   # Some programs need SUID wrappers, can be configured further or are

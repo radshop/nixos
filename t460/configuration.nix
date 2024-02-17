@@ -16,6 +16,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "nixt460"; # Define your hostname.
+  networking.nftables.enable = true;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -121,6 +122,7 @@
   };
 
   services.tailscale.enable = true;
+  services.tailscale.useRoutingFeatures = "client";
   # services.mullvad-vpn.enable = true;
   services.xserver = {
     # Configure keymap in X11

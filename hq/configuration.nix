@@ -101,7 +101,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget
-    mullvad-vpn
+    # mullvad-vpn
     virt-manager virtiofsd
     zoom-us
     pv
@@ -150,7 +150,9 @@
     '';
   };
   services.onedrive.enable = true;
-  services.mullvad-vpn.enable = true;
+  # services.mullvad-vpn.enable = true;
+  services.tailscale.enable = true;
+  services.tailscale.useRoutingFeatures = "client";
   services.xserver = {
     # Configure keymap in X11
     layout = "us";

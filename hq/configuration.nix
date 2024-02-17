@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       <home-manager/nixos>
+      ../shared/services.nix
     ];
 
   # Bootloader.
@@ -101,7 +102,6 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget
-    # mullvad-vpn
     virt-manager virtiofsd
     zoom-us
     pv
@@ -150,9 +150,6 @@
     '';
   };
   services.onedrive.enable = true;
-  # services.mullvad-vpn.enable = true;
-  services.tailscale.enable = true;
-  services.tailscale.useRoutingFeatures = "client";
   services.xserver = {
     # Configure keymap in X11
     layout = "us";
@@ -164,26 +161,11 @@
     displayManager.sessionCommands = ''
       ${lib.getBin pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
     '';
-		# XFCE
-    # desktopManager = {
-    #   xterm.enable = false;
-    #   xfce.enable = true;
-    # };
-    # displayManager.defaultSession = "xfce";
     # Enable the GNOME Desktop Environment.
     displayManager.gdm.enable = true;
     displayManager.defaultSession = "gnome";
     desktopManager.gnome.enable = true;
   };
-  services.syncthing = {
-      enable = true;
-      user = "miscguy";
-      dataDir = "/home/miscguy/sync";    # Default folder for new synced folders
-      configDir = "/home/miscguy/.config/syncthing";   # Folder for Syncthing's settings and keys
-  };
-
-  # flatpak
-  services.flatpak.enable = true;
 
   networking.extraHosts =
     ''

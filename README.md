@@ -10,7 +10,7 @@
 * move the hardware configuration `sudo mv /etc/nixos/hardware-configuration.nix ~/nixos/COMPUTER`
 * copy the configuration.nix and home.nix from another computer folder that's closest to what you want for this one. Change the hostname and any other changes you want to make
 * `sudo rm /etc/nixos/configuration.nix`
-* `sudo ln -s /home/miscguy/COMPUTER/configuration.nix /etc/nixos/configuration.nix`
+* `sudo ln -s /home/miscguy/nixos/COMPUTER/configuration.nix /etc/nixos/configuration.nix`
 * `sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos`
 * `sudo nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager`
 * `sudo nix-channel --update`

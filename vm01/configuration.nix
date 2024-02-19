@@ -18,6 +18,15 @@
     users.miscguy = import ./home.nix;
   };
 
+  # for vm guest 
+  services.spice-vdagentd.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    libguestfs
+    wget
+    pv
+  ];
+
   # Bootloader.
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/vda";
@@ -79,13 +88,6 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
-  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

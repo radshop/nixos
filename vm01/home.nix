@@ -1,5 +1,3 @@
-# sudo nix-channel --add https://github.com/nix-community/home-manager/archive/release-23.05.tar.gz home-manager
-
 { config, pkgs, ... }:
 
 {
@@ -8,13 +6,14 @@
     ../shared/tmux.nix  
     ../shared/git.nix  
     ../shared/bash.nix  
+    ../shared/firefox.nix
   ];
   home.username = "miscguy";
   home.homeDirectory = "/home/miscguy";
   home.stateVersion = "23.11";
   nixpkgs.config.allowUnfree = true;
   home.packages = with pkgs; [
-    firefox librewolf brave chromium
+    librewolf brave chromium
     logseq
     # libreoffice-fresh
   ];

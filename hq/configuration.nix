@@ -12,7 +12,12 @@
       ../shared/locale.nix
       ../shared/services.nix
       ../shared/misc_configuration.nix
+      ../shared/miscguy.nix
     ];
+
+  home-manager = {
+    users.miscguy = import ./home.nix;
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -43,32 +48,6 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
-
-  users.groups.miscguy.members = [ "miscguy" ];
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.miscguy = {
-    isNormalUser = true;
-    description = "miscguy";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd" "docker" "miscguy"];
-    # packages = with pkgs; [
-    #   firefox librewolf brave chromium
-    # ];
-  };
-  home-manager = {
-    users.miscguy = import ./home.nix;
-  };
-
-  security.sudo.extraRules = [
-    {
-      users = [ "miscguy" ];
-      commands = [
-        {
-          command = "ALL";
-          options = [ "SETENV" "NOPASSWD" ];
-        }
-      ];
-    }
-  ];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;

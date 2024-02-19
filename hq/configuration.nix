@@ -11,6 +11,7 @@
       <home-manager/nixos>
       ../shared/locale.nix
       ../shared/services.nix
+      ../shared/misc_configuration.nix
     ];
 
   # Bootloader.

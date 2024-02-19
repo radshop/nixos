@@ -2,15 +2,15 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ lib, config, pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       <home-manager/nixos>
-      ../shared/locale.nix
       ../shared/services.nix
+      ../shared/locale.nix
       ../shared/miscguy.nix
     ];
 
@@ -19,14 +19,35 @@
   };
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub.enable = true;
+  boot.loader.grub.device = "/dev/vda";
+  boot.loader.grub.useOSProber = true;
 
-  networking.hostName = "nixhq"; # Define your hostname.
+  networking.hostName = "nixVm01"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+
+  # Configure network proxy if necessary
+  # networking.proxy.default = "http://user:password@proxy:port/";
+  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
   networking.networkmanager.enable = true;
+
+  # Enable the X11 windowing system.
+  services.xserver.enable = true;
+
+  # Enable the GNOME Desktop Environment.
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+
+  # Configure keymap in X11
+  services.xserver = {
+    xkb.layout = "us";
+    xkb.variant = "";
+  };
+
+  # Enable CUPS to print documents.
+  services.printing.enable = true;
 
   # Enable sound with pipewire.
   sound.enable = true;
@@ -48,82 +69,23 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  # Enable automatic login for the user.
+  services.xserver.displayManager.autoLogin.enable = true;
+  services.xserver.displayManager.autoLogin.user = "miscguy";
+
+  # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
+  systemd.services."getty@tty1".enable = false;
+  systemd.services."autovt@tty1".enable = false;
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    wget
-    virt-manager virtiofsd
-    zoom-us
-    pv
-    calibre
-    xournalpp
-    wireplumber
-    sqlcmd
-    dbeaver
+  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+  #  wget
   ];
-
-  virtualisation = {
-    # libvirt/qemu/kvm enable
-    libvirtd.enable = true;
-    # docker
-    docker = {
-      enable = true;
-    };
-  };
-  # dconf for kvm
-  programs.dconf.enable = true;
-
-  # ssh keyring
-  programs.sway.extraSessionCommands = ''
-      eval $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh);
-      export SSH_AUTH_SOCK;
-  '';
-	services.openssh = {
-		enable = true;
-		# require public key authentication for better security
-		settings.PasswordAuthentication = false;
-		settings.KbdInteractiveAuthentication = false;
-		#settings.PermitRootLogin = "yes";
-	};
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  services.postgresql = {
-    enable = true;
-    authentication = pkgs.lib.mkForce ''
-    # Generated file; do not edit!
-    # TYPE  DATABASE        USER            ADDRESS                 METHOD
-    local   all             all                                     trust
-    host    all             all             127.0.0.1/32            trust
-    host    all             all             ::1/128                 trust
-    '';
-  };
-  services.onedrive.enable = true;
-  services.xserver = {
-    # Configure keymap in X11
-    xkb.layout = "us";
-    xkb.variant = "";
-    # Enable the X11 windowing system.
-    enable = true;
-    # displaylink
-    videoDrivers = [ "displaylink" "modesetting" ];
-    displayManager.sessionCommands = ''
-      ${lib.getBin pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
-    '';
-    # Enable the GNOME Desktop Environment.
-    displayManager.gdm.enable = true;
-    displayManager.defaultSession = "gnome";
-    desktopManager.gnome.enable = true;
-  };
-
-  networking.extraHosts =
-    ''
-      172.17.0.2 sql1
-    '';
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -150,5 +112,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.05"; # Did you read the comment?
+  system.stateVersion = "23.11"; # Did you read the comment?
+
 }

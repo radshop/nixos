@@ -18,6 +18,26 @@
       fsType = "ext4";
     };
 
+  fileSystems."/home/miscguy/sync" =
+    { device = "sync";
+      fsType = "virtiofs";
+    };
+
+  fileSystems."/home/miscguy/github" =
+    { device = "github";
+      fsType = "virtiofs";
+    };
+
+  fileSystems."/home/miscguy/OneDrive" =
+    { device = "OneDrive";
+      fsType = "virtiofs";
+    };
+
+  fileSystems."/home/miscguy/Downloads" =
+    { device = "Downloads";
+      fsType = "virtiofs";
+    };
+
   swapDevices =
     [ { device = "/dev/disk/by-uuid/6edffa20-a9b8-434d-8e0a-de09f5689e69"; }
     ];

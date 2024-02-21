@@ -2,6 +2,8 @@
 
 su -c "flatpak update -y" miscguy
 nix-channel --update
+nix-env --delete-generations 10d
+nix-collect-garbage --delete-older-than 10d
 nixos-rebuild switch
 retval=$?
 if [ $retval == 0 ]; then

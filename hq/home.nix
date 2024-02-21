@@ -27,5 +27,6 @@
     ranger
     bc # command line calculator
     freeplane
+    xiphos
   ];
 }

@@ -29,6 +29,6 @@
     ranger
     bc # command line calculator
     freeplane
-    xiphos
+    squirrel-sql
   ];
 }

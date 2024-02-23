@@ -30,5 +30,6 @@
     bc # command line calculator
     freeplane
     squirrel-sql
+    dia
   ];
 }

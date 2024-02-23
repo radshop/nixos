@@ -23,13 +23,9 @@
     thunderbird
     pdfarranger pdfsandwich
     gimp-with-plugins
-    element-desktop
     yt-dlp
     obs-studio
-    ranger
-    bc # command line calculator
     freeplane
-    squirrel-sql
     dia
   ];
 }

@@ -18,6 +18,7 @@
     logseq
     vlc
     libreoffice-fresh
+    yt-dlp
   ];
 
 }

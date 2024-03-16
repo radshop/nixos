@@ -13,6 +13,7 @@
       ../shared/services.nix
       ../shared/misc_configuration.nix
       ../shared/miscguy.nix
+      ../shared/sql1-backup-permissions.nix
     ];
 
   home-manager = {
@@ -68,7 +69,12 @@
 
   virtualisation = {
     # libvirt/qemu/kvm enable
-    libvirtd.enable = true;
+    libvirtd = {
+      enable = true;
+      qemu = {
+        package = pkgs.qemu_kvm;
+      };
+    };
     # docker
     docker = {
       enable = true;

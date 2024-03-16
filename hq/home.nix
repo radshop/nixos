@@ -13,10 +13,7 @@
   home.stateVersion = "23.11";
   nixpkgs.config.allowUnfree = true;
   home.packages = with pkgs; [
-    librewolf chromium 
-    # google-chrome vivaldi
-    teams-for-linux
-    brave
+    librewolf chromium brave
     logseq
     vlc
     libreoffice-fresh

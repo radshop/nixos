@@ -1,0 +1,6 @@
+<network>
+  <name>macvtap-net</name>
+  <forward mode="bridge">
+    <interface dev="enp0s31f6"/>
+  </forward>
+</network>

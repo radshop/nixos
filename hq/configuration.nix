@@ -30,6 +30,9 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # for vm macvtap
+  networking.dhcpcd.denyInterfaces = [ "macvtap0@*" ];
+
   # Enable sound with pipewire.
   sound.enable = true;
   hardware.pulseaudio.enable = false;

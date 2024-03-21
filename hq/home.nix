@@ -24,5 +24,6 @@
     obs-studio
     freeplane
     dia
+    sioyek
   ];
 }

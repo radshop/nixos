@@ -60,6 +60,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget
+    docker-compose
     virt-manager virtiofsd
     zoom-us
     pv

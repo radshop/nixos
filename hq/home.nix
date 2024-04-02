@@ -14,6 +14,7 @@
   nixpkgs.config.allowUnfree = true;
   home.packages = with pkgs; [
     librewolf chromium brave
+    google-chrome
     logseq
     vlc
     libreoffice-fresh

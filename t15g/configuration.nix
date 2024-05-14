@@ -9,6 +9,8 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       <home-manager/nixos>
+      ../shared/locale.nix
+      ../shared/services.nix
     ];
 
   # Bootloader.
@@ -24,25 +26,6 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
-
-  # Set your time zone.
-  time.timeZone = "America/Los_Angeles";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_US.UTF-8";
-    LC_IDENTIFICATION = "en_US.UTF-8";
-    LC_MEASUREMENT = "en_US.UTF-8";
-    LC_MONETARY = "en_US.UTF-8";
-    LC_NAME = "en_US.UTF-8";
-    LC_NUMERIC = "en_US.UTF-8";
-    LC_PAPER = "en_US.UTF-8";
-    LC_TELEPHONE = "en_US.UTF-8";
-    LC_TIME = "en_US.UTF-8";
-  };
-
 
   # Enable sound with pipewire.
   sound.enable = true;
@@ -97,7 +80,6 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget
-    mullvad-vpn
     virt-manager
     zoom-us
     pv
@@ -144,8 +126,6 @@
     '';
   };
   services.onedrive.enable = true;
-  services.mullvad-vpn.enable = true;
-  # services.tailscale.enable = true;
   services.xserver = {
     # Configure keymap in X11
     xkb.layout = "us";
@@ -168,21 +148,6 @@
     displayManager.defaultSession = "gnome";
     desktopManager.gnome.enable = true;
   };
-  services.syncthing = {
-      enable = true;
-      user = "miscguy";
-      dataDir = "/home/miscguy/sync";    # Default folder for new synced folders
-      configDir = "/home/miscguy/.config/syncthing";   # Folder for Syncthing's settings and keys
-  };
-
-  # flatpak
-  services.flatpak.enable = true;
-  # -->  sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-  # for xfce flatpak
-  # xdg.portal = {
-  #   enable = true;
-  #   extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-  # };
 
   networking.extraHosts =
     ''

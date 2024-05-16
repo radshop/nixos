@@ -2,3 +2,4 @@
  flatpak install flathub org.signal.Signal
  flatpak install flathub com.amazon.Workspaces
  flatpak install flathub com.transmissionbt.Transmission
+ flatpak install flathub im.riot.Riot

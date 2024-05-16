@@ -26,5 +26,6 @@
     freeplane
     dia
     sioyek
+    conda
   ];
 }

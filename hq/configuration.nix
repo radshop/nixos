@@ -6,7 +6,7 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [ 
       ./hardware-configuration.nix
       <home-manager/nixos>
       ../shared/locale.nix
@@ -34,7 +34,8 @@
   networking.dhcpcd.denyInterfaces = [ "macvtap0@*" ];
 
   # Enable sound with pipewire.
-  sound.enable = true;
+  # Remove sound.enable or set it to false if you had it set previously, as sound.enable is only meant for ALSA-based configurations
+  # sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -50,6 +51,8 @@
     #media-session.enable = true;
   };
 
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 

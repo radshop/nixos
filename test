@@ -1,0 +1,18 @@
+#! /bin/sh
+
+flatpak update -y
+sudo nix-channel --update
+sudo nix-env --delete-generations 60d
+sudo nix-collect-garbage --delete-older-than 60d
+sudo nixos-rebuild switch
+retval=$?
+if [ $retval == 0 ]; then
+  pushd /home/miscguy/nixos
+  gennbr="$(sudo nix-env --list-generations -p /nix/var/nix/profiles/system | grep current | awk '{print $1}')"
+  msg="$HOSTNAME: generation $gennbr"
+  git pull
+  git add .
+  git commit -m "$msg" 
+  git push
+  popd
+fi

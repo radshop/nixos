@@ -6,13 +6,14 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [ 
       ./hardware-configuration.nix
       <home-manager/nixos>
       ../shared/locale.nix
       ../shared/services.nix
       ../shared/misc_configuration.nix
       ../shared/miscguy.nix
+      ../shared/sql1-backup-permissions.nix
     ];
 
   home-manager = {
@@ -29,8 +30,12 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # for vm macvtap
+  networking.dhcpcd.denyInterfaces = [ "macvtap0@*" ];
+
   # Enable sound with pipewire.
-  sound.enable = true;
+  # Remove sound.enable or set it to false if you had it set previously, as sound.enable is only meant for ALSA-based configurations
+  # sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -46,6 +51,8 @@
     #media-session.enable = true;
   };
 
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
@@ -56,6 +63,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget
+    docker-compose
     virt-manager virtiofsd
     zoom-us
     pv
@@ -68,7 +76,12 @@
 
   virtualisation = {
     # libvirt/qemu/kvm enable
-    libvirtd.enable = true;
+    libvirtd = {
+      enable = true;
+      qemu = {
+        package = pkgs.qemu_kvm;
+      };
+    };
     # docker
     docker = {
       enable = true;

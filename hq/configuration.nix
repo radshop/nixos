@@ -136,7 +136,7 @@
 
   networking.extraHosts =
     ''
-      172.17.0.2 sql1
+      172.17.0.2 mssql1
     '';
 
   # Some programs need SUID wrappers, can be configured further or are

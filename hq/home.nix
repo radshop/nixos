@@ -27,5 +27,6 @@
     dia
     sioyek
     conda
+    bash-completion
   ];
 }

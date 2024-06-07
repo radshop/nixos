@@ -28,5 +28,6 @@
     sioyek
     conda
     bash-completion
+    python311Packages.argcomplete
   ];
 }

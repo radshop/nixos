@@ -104,6 +104,8 @@
 		#settings.PermitRootLogin = "yes";
 	};
 
+  services.xrdp.enable = true;
+
   # Enable CUPS to print documents.
   services.printing.enable = true;
 

@@ -91,6 +91,7 @@
   programs.dconf.enable = true;
 
   # ssh keyring
+  programs.ssh.startAgent = true;
   programs.sway.extraSessionCommands = ''
       eval $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh);
       export SSH_AUTH_SOCK;

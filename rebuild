@@ -1,18 +1,16 @@
 #! /bin/sh
-
-su -c "flatpak update -y" miscguy
-nix-channel --update
-nix-env --delete-generations 60d
-nix-collect-garbage --delete-older-than 60d
-nixos-rebuild switch
+# NOTE: calling sudo inside a script is not best practice, but it works in this case
+flatpak update -y
+sudo nix-channel --update
+sudo nix-env --delete-generations 60d
+sudo nix-collect-garbage --delete-older-than 60d
+sudo nixos-rebuild switch
 retval=$?
 if [ $retval == 0 ]; then
   pushd /home/miscguy/nixos
-  gennbr="$(nix-env --list-generations -p /nix/var/nix/profiles/system | grep current | awk '{print $1}')"
+  gennbr="$(sudo nix-env --list-generations -p /nix/var/nix/profiles/system | grep current | awk '{print $1}')"
   msg="$HOSTNAME: generation $gennbr"
-  su -c "git pull" miscguy
-  su -c "git add ." miscguy
-  su -c "git commit -m \"$msg\"" miscguy
-  su -c "git push" miscguy
+  git add .
+  git commit -m "$msg" 
   popd
 fi

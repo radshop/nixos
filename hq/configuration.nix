@@ -71,7 +71,6 @@
     xournalpp
     wireplumber
     sqlcmd
-    dbeaver
   ];
 
   virtualisation = {
@@ -133,8 +132,10 @@
     '';
     # Enable the GNOME Desktop Environment.
     displayManager.gdm.enable = true;
-    displayManager.defaultSession = "gnome";
     desktopManager.gnome.enable = true;
+  };
+  services.displayManager = {
+    defaultSession = "gnome";
   };
 
   networking.extraHosts =

@@ -10,7 +10,7 @@
   ];
   home.username = "miscguy";
   home.homeDirectory = "/home/miscguy";
-  home.stateVersion = "23.11";
+  home.stateVersion = "24.05";
   nixpkgs.config.allowUnfree = true;
   home.packages = with pkgs; [
     librewolf chromium brave
@@ -28,5 +28,7 @@
     sioyek
     conda
     bash-completion
+    python311Packages.argcomplete
+    dbeaver-bin
   ];
 }

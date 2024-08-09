@@ -71,7 +71,6 @@
     xournalpp
     wireplumber
     sqlcmd
-    dbeaver
   ];
 
   virtualisation = {
@@ -91,6 +90,7 @@
   programs.dconf.enable = true;
 
   # ssh keyring
+  programs.ssh.startAgent = true;
   programs.sway.extraSessionCommands = ''
       eval $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh);
       export SSH_AUTH_SOCK;
@@ -102,6 +102,8 @@
 		settings.KbdInteractiveAuthentication = false;
 		#settings.PermitRootLogin = "yes";
 	};
+
+  services.xrdp.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -130,8 +132,10 @@
     '';
     # Enable the GNOME Desktop Environment.
     displayManager.gdm.enable = true;
-    displayManager.defaultSession = "gnome";
     desktopManager.gnome.enable = true;
+  };
+  services.displayManager = {
+    defaultSession = "gnome";
   };
 
   networking.extraHosts =

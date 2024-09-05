@@ -22,13 +22,10 @@
     gimp-with-plugins
     yt-dlp
     obs-studio
-    freeplane
-    dia
     sioyek
     conda
     bash-completion
     python311Packages.argcomplete
     dbeaver-bin
-    chessx
   ];
 }

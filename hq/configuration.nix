@@ -29,6 +29,7 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+  #systemd.network.enable = true;
 
   # for vm macvtap
   networking.dhcpcd.denyInterfaces = [ "macvtap0@*" ];

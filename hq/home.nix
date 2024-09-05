@@ -15,7 +15,6 @@
   home.packages = with pkgs; [
     librewolf chromium brave
     google-chrome
-    logseq
     vlc
     libreoffice-fresh
     thunderbird
@@ -30,5 +29,6 @@
     bash-completion
     python311Packages.argcomplete
     dbeaver-bin
+    chessx
   ];
 }

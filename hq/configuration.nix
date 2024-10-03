@@ -65,7 +65,7 @@
   environment.systemPackages = with pkgs; [
     wget
     docker-compose
-    virt-manager virtiofsd
+    virt-manager virtiofsd virt-viewer
     zoom-us
     pv
     calibre

@@ -76,6 +76,10 @@
     sshfs
   ];
 
+  # fuse
+  programs.fuse.userAllowOther = true;
+  users.groups.fuse.members = [ "misguy" ];
+
   virtualisation = {
     # libvirt/qemu/kvm enable
     libvirtd = {

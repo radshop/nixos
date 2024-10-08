@@ -14,6 +14,7 @@
       ../shared/misc_configuration.nix
       ../shared/miscguy.nix
       ../shared/sql1-backup-permissions.nix
+      #../shared/nextcloud-server.nix
     ];
 
   home-manager = {
@@ -65,13 +66,14 @@
   environment.systemPackages = with pkgs; [
     wget
     docker-compose
-    virt-manager virtiofsd virt-viewer
+    virt-manager virtiofsd 
     zoom-us
     pv
     calibre
     xournalpp
     wireplumber
     sqlcmd
+    sshfs
   ];
 
   virtualisation = {
@@ -139,10 +141,10 @@
     defaultSession = "gnome";
   };
 
-  networking.extraHosts =
-    ''
-      172.17.0.2 mssql1
-    '';
+  # networking.extraHosts =
+  #   ''
+  #     172.17.0.2 mssql1
+  #   '';
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

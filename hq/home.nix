@@ -27,5 +27,6 @@
     bash-completion
     python311Packages.argcomplete
     dbeaver-bin
+    git-filter-repo
   ];
 }

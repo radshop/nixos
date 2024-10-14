@@ -28,5 +28,6 @@
     python311Packages.argcomplete
     dbeaver-bin
     git-filter-repo
+    unzip gzip
   ];
 }

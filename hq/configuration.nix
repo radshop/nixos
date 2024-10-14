@@ -73,7 +73,7 @@
     xournalpp
     wireplumber
     sqlcmd
-    sshfs
+    cryptsetup sshfs
   ];
 
   # fuse

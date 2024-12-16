@@ -28,6 +28,7 @@
     python311Packages.argcomplete
     dbeaver-bin
     git-filter-repo
-    unzip gzip
+    unzip gzip rename
+    appimage-run
   ];
 }

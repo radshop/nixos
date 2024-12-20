@@ -10,8 +10,8 @@
 * move the config files `sudo mv etc/nixos/*.nix ~/nixos/COMPUTER`
 * use the configuration.nix and home.nix as a template from another computer folder that's closest to what you want for this one. Change the hostname and any other changes you want to make
 * create a symbolic link to the config file `sudo ln -s /home/miscguy/nixos/COMPUTER/configuration.nix /etc/nixos/configuration.nix`
-* `sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos` or `sudo nix-channel --add https://nixos.org/channels/nixos-23.11 nixos`
-* `sudo nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager` or `sudo nix-channel --add https://github.com/nix-community/home-manager/archive/release-23.11.tar.gz home-manager`
+* `sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos` or `sudo nix-channel --add https://nixos.org/channels/nixos-24.05 nixos`
+* `sudo nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager` or `sudo nix-channel --add https://github.com/nix-community/home-manager/archive/release-24.05.tar.gz home-manager`
 * `sudo nix-channel --update`
 * `sudo nixos-rebuild switch`
 

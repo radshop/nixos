@@ -145,6 +145,14 @@
     defaultSession = "gnome";
   };
 
+	services.ollama = {
+		enable = true;
+		# Optional: load models on startup
+    loadModels = [ "deepseek-r1" "llama2-uncensored" ];
+    acceleration = "cuda";
+  };
+  services.open-webui.enable = true;
+
   # networking.extraHosts =
   #   ''
   #     172.17.0.2 mssql1

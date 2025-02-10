@@ -133,7 +133,7 @@
     # Enable the X11 windowing system.
     enable = true;
     # displaylink
-    videoDrivers = [ "displaylink" "modesetting" ];
+    videoDrivers = [ "displaylink" "modesetting" "nvidia" ];
     displayManager.sessionCommands = ''
       ${lib.getBin pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
     '';
@@ -152,6 +152,12 @@
     acceleration = "cuda";
   };
   services.open-webui.enable = true;
+
+  hardware.nvidia = {
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    open = true;
+    modesetting.enable = true;
+  };
 
   # networking.extraHosts =
   #   ''

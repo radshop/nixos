@@ -74,6 +74,7 @@
     wireplumber
     sqlcmd
     cryptsetup sshfs
+    pciutils
   ];
 
   # fuse

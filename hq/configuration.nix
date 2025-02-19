@@ -75,7 +75,14 @@
     sqlcmd
     cryptsetup sshfs
     pciutils
+    gnome.gnome-session
   ];
+
+  #gnome remote desktop
+  services.gnome.gnome-remote-desktop.enable = true;
+  services.xrdp.enable = true;
+  services.xrdp.defaultWindowManager = "${pkgs.gnome.gnome-session}/bin/gnome-session";
+
 
   # fuse
   programs.fuse.userAllowOther = true;
@@ -111,7 +118,6 @@
 		#settings.PermitRootLogin = "yes";
 	};
 
-  services.xrdp.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;

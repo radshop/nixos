@@ -77,6 +77,7 @@
     pciutils
     gnome-session
     gnome-remote-desktop
+    xrdp
   ];
 
   #gnome remote desktop

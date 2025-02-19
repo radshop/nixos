@@ -75,12 +75,14 @@
     sqlcmd
     cryptsetup sshfs
     pciutils
-    gnome.gnome-session
+    gnome-session
+    gnome-remote-desktop
   ];
 
   #gnome remote desktop
   services.gnome.gnome-remote-desktop.enable = true;
   services.xrdp.enable = true;
+  services.xrdp.defaultWindowManager = "gnome-session";
   #services.xrdp.defaultWindowManager = "${pkgs.gnome.gnome-session}/bin/gnome-session";
 
 

@@ -10,12 +10,11 @@
   ];
   home.username = "miscguy";
   home.homeDirectory = "/home/miscguy";
-  home.stateVersion = "24.05";
+  home.stateVersion = "24.11";
   nixpkgs.config.allowUnfree = true;
   home.packages = with pkgs; [
     librewolf chromium brave
     google-chrome
-    logseq
     vlc
     libreoffice-fresh
     thunderbird
@@ -23,12 +22,13 @@
     gimp-with-plugins
     yt-dlp
     obs-studio
-    freeplane
-    dia
     sioyek
     conda
     bash-completion
     python311Packages.argcomplete
     dbeaver-bin
+    git-filter-repo
+    unzip gzip rename
+    appimage-run
   ];
 }

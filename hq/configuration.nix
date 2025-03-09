@@ -10,6 +10,7 @@
       ../shared/misc_configuration.nix
       ../shared/miscguy.nix
       ../shared/sql1-backup-permissions.nix
+      #../shared/nextcloud-server.nix
     ];
 
   home-manager = {
@@ -25,6 +26,7 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+  #systemd.network.enable = true;
 
   # for vm macvtap
   networking.dhcpcd.denyInterfaces = [ "macvtap0@*" ];
@@ -60,14 +62,30 @@
   environment.systemPackages = with pkgs; [
     wget
     docker-compose
-    virt-manager virtiofsd
+    virt-manager virtiofsd 
     zoom-us
     pv
     calibre
     xournalpp
     wireplumber
     sqlcmd
+    cryptsetup sshfs
+    pciutils
+    gnome-session
+    gnome-remote-desktop
+    xrdp
   ];
+
+  #gnome remote desktop
+  services.gnome.gnome-remote-desktop.enable = true;
+  services.xrdp.enable = true;
+  services.xrdp.defaultWindowManager = "gnome-session";
+  #services.xrdp.defaultWindowManager = "${pkgs.gnome.gnome-session}/bin/gnome-session";
+
+
+  # fuse
+  programs.fuse.userAllowOther = true;
+  users.groups.fuse.members = [ "misguy" ];
 
   virtualisation = {
     # libvirt/qemu/kvm enable
@@ -99,7 +117,6 @@
 		#settings.PermitRootLogin = "yes";
 	};
 
-  services.xrdp.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -122,7 +139,7 @@
     # Enable the X11 windowing system.
     enable = true;
     # displaylink
-    videoDrivers = [ "displaylink" "modesetting" ];
+    videoDrivers = [ "displaylink" "modesetting" "nvidia" ];
     displayManager.sessionCommands = ''
       ${lib.getBin pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
     '';
@@ -134,10 +151,24 @@
     defaultSession = "gnome";
   };
 
-  networking.extraHosts =
-    ''
-      172.17.0.2 mssql1
-    '';
+	services.ollama = {
+		enable = true;
+		# Optional: load models on startup
+    loadModels = [ "deepseek-r1" "llama2-uncensored" ];
+    acceleration = "cuda";
+  };
+  services.open-webui.enable = true;
+
+  hardware.nvidia = {
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    open = true;
+    modesetting.enable = true;
+  };
+
+  # networking.extraHosts =
+  #   ''
+  #     172.17.0.2 mssql1
+  #   '';
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

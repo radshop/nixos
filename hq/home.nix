@@ -15,6 +15,7 @@
   home.packages = with pkgs; [
     librewolf chromium brave
     google-chrome
+    vivaldi
     vlc
     libreoffice-fresh
     thunderbird

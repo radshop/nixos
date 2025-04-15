@@ -14,6 +14,7 @@
       ../shared/misc_configuration.nix
       ../shared/miscguy.nix
       ../shared/sql1-backup-permissions.nix
+      ../common/nix/flakes.nix
       #../shared/nextcloud-server.nix
     ];
 
@@ -80,12 +81,6 @@
     xrdp
   ];
 
-  #gnome remote desktop
-  services.gnome.gnome-remote-desktop.enable = true;
-  services.xrdp.enable = true;
-  services.xrdp.defaultWindowManager = "gnome-session";
-  #services.xrdp.defaultWindowManager = "${pkgs.gnome.gnome-session}/bin/gnome-session";
-
 
   # fuse
   programs.fuse.userAllowOther = true;
@@ -121,9 +116,15 @@
 		#settings.PermitRootLogin = "yes";
 	};
 
+  # required for Zoom screen sharing
+  xdg.portal = {
+    enable = true;
+    extraPortals = [pkgs.xdg-desktop-portal pkgs.xdg-desktop-portal-kde];
+  };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+  services.avahi.enable = true;
 
   services.postgresql = {
     enable = true;
@@ -154,6 +155,19 @@
   services.displayManager = {
     defaultSession = "gnome";
   };
+
+  #gnome remote desktop
+  services.gnome.gnome-remote-desktop.enable = true;
+  services.xrdp.enable = true;
+  #services.xrdp.defaultWindowManager = "gnome-session";
+  services.xrdp.defaultWindowManager = "${pkgs.gnome.gnome-session}/bin/gnome-session";
+  services.xrdp.openFirewall = true;
+  # Disable the GNOME3/GDM auto-suspend feature that cannot be disabled in GUI!
+  # If no user is logged in, the machine will power down after 20 minutes.
+  systemd.targets.sleep.enable = false;
+  systemd.targets.suspend.enable = false;
+  systemd.targets.hibernate.enable = false;
+  systemd.targets.hybrid-sleep.enable = false;  
 
 	services.ollama = {
 		enable = true;

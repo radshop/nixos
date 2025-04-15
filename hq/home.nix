@@ -31,5 +31,6 @@
     git-filter-repo
     unzip gzip rename
     appimage-run
+    id3v2
   ];
 }

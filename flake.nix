@@ -25,6 +25,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            home-manager.users.miscguy = import ./hq/home.nix;
           }
         ];
         specialArgs = { inherit inputs; };

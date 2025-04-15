@@ -19,7 +19,6 @@
         modules = [
           ./hq/configuration.nix
           ./common
-          ./shared/firefox.nix
           
           # Add Home Manager's NixOS module
           home-manager.nixosModules.home-manager

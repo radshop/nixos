@@ -9,8 +9,8 @@ HOSTNAME=$(hostname)
 flatpak update -y
 
 # Update flake inputs (replaces nix-channel --update)
-# temporarily disabled while I work out the github token issue
-#nix flake update
+source ~/.config/nixos/secrets.env
+nix flake update
 
 # Clean up old generations
 sudo nix-env --delete-generations 60d

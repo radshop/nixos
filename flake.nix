@@ -6,7 +6,7 @@
     
     # Add Home Manager as a flake input
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-24.11";
       # This makes home-manager use the same nixpkgs as your system
       inputs.nixpkgs.follows = "nixpkgs";
     };

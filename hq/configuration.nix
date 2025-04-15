@@ -9,7 +9,7 @@
       ../shared/services.nix
       ../shared/misc_configuration.nix
       ../shared/miscguy.nix
-      ../shared/sql1-backup-permissions.nix
+      #../shared/sql1-backup-permissions.nix
       ../common/nix/flakes.nix
       #../shared/nextcloud-server.nix
     ];
@@ -140,7 +140,7 @@
     # Enable the X11 windowing system.
     enable = true;
     # displaylink
-    videoDrivers = [ "displaylink" "modesetting" "nvidia" ];
+    videoDrivers = [ "displaylink" "modesetting" ];
     displayManager.sessionCommands = ''
       ${lib.getBin pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
     '';
@@ -165,19 +165,19 @@
   systemd.targets.hibernate.enable = false;
   systemd.targets.hybrid-sleep.enable = false;  
 
-	services.ollama = {
-		enable = true;
-		# Optional: load models on startup
-    loadModels = [ "deepseek-r1" "llama2-uncensored" ];
-    acceleration = "cuda";
-  };
-  services.open-webui.enable = true;
+	# services.ollama = {
+	# 	enable = true;
+	# 	# Optional: load models on startup
+    # loadModels = [ "deepseek-r1" "llama2-uncensored" ];
+    # acceleration = "cuda";
+  # };
+  # services.open-webui.enable = true;
 
-  hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-    open = true;
-    modesetting.enable = true;
-  };
+  # hardware.nvidia = {
+    # package = config.boot.kernelPackages.nvidiaPackages.stable;
+    # open = true;
+    # modesetting.enable = true;
+  # };
 
   # networking.extraHosts =
   #   ''

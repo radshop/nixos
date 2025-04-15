@@ -14,8 +14,6 @@
     # Auto-optimize store to save disk space
     settings.auto-optimise-store = true;
 
-    extraOptions = ''
-      access-tokens = github.com=${builtins.readFile /home/miscguy/nixos/secrets/github_token}
-    '';
+    # extraOptions = '' access-tokens = github.com=${builtins.readFile home/miscguy/nixos/secrets/github_token} '';
   };
 }

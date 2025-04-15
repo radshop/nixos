@@ -61,12 +61,18 @@ The repository now includes flakes support. To enable flakes, the system must ha
    ```bash
    git clone https://github.com/radshop/nixos.git ~/nixos
    ```
-3. First, apply the basic configuration to enable flakes:
+3. Set up GitHub token for authentication (to avoid rate limiting):
+   ```bash
+   mkdir -p ~/.config/nixos
+   echo 'GITHUB_TOKEN=ghp_your_token_here' > ~/.config/nixos/secrets.env
+   chmod 600 ~/.config/nixos/secrets.env
+   ```
+4. First, apply the basic configuration to enable flakes:
    ```bash
    cd ~/nixos
    sudo nixos-rebuild switch -I nixos-config=./[hostname]/configuration.nix
    ```
-4. Now you can use flakes for subsequent rebuilds:
+5. Now you can use flakes for subsequent rebuilds:
    ```bash
    cd ~/nixos
    sudo nixos-rebuild switch --flake .#[hostname]
@@ -81,12 +87,37 @@ The repository now includes flakes support. To enable flakes, the system must ha
    ```
 2. Update the flake lock file:
    ```bash
+   source ~/.config/nixos/secrets.env  # Load GitHub token
    nix flake update
    ```
 3. Rebuild your system:
    ```bash
    sudo nixos-rebuild switch --flake .#[hostname]
    ```
+
+### Environment Variables for Secrets
+
+To avoid GitHub API rate limiting and to keep sensitive information out of the Nix store, this configuration uses environment variables:
+
+1. Create a secrets file if you haven't already:
+   ```bash
+   mkdir -p ~/.config/nixos
+   touch ~/.config/nixos/secrets.env
+   chmod 600 ~/.config/nixos/secrets.env
+   ```
+
+2. Add your GitHub token:
+   ```bash
+   echo 'GITHUB_TOKEN=ghp_your_token_here' > ~/.config/nixos/secrets.env
+   ```
+
+3. When running flake commands, source this file first:
+   ```bash
+   source ~/.config/nixos/secrets.env
+   nix flake update
+   ```
+
+4. The system automatically configures Nix to use this token via the `github-token.nix` module
 
 ### Adding a New System to Flakes
 
@@ -128,6 +159,7 @@ sudo nixos-rebuild switch --flake .#[hostname]
 3. Commit and push changes regularly
 4. Use Git branches for experimental changes
 5. Test configurations with `nixos-rebuild test` before applying them
+6. Keep secrets in environment variables, not in the Nix store
 
 ## Troubleshooting
 
@@ -136,3 +168,5 @@ If you encounter issues with flakes commands, ensure that the experimental featu
 ```bash
 sudo nixos-rebuild switch --flake .#[hostname] --extra-experimental-features "nix-command flakes"
 ```
+
+If you're having issues with GitHub rate limiting, make sure your GitHub token is correctly set up in `~/.config/nixos/secrets.env` and that you've sourced this file before running flake commands.

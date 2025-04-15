@@ -1,4 +1,4 @@
-with import <nixpkgs> {};
+{ pkgs ? import <nixpkgs> {}, ... }:
 {
   programs.vim = {
     enable = true;

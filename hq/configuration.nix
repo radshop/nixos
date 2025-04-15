@@ -4,7 +4,7 @@
   imports =
     [ 
       ./hardware-configuration.nix
-      <home-manager/nixos>
+      #<home-manager/nixos>
       ../shared/locale.nix
       ../shared/services.nix
       ../shared/misc_configuration.nix
@@ -115,7 +115,7 @@
   # required for Zoom screen sharing
   xdg.portal = {
     enable = true;
-    extraPortals = [pkgs.xdg-desktop-portal pkgs.xdg-desktop-portal-kde];
+    extraPortals = [pkgs.xdg-desktop-portal pkgs.kdePackages.xdg-desktop-portal-kde];
   };
 
   # Enable CUPS to print documents.
@@ -156,7 +156,7 @@
   services.gnome.gnome-remote-desktop.enable = true;
   services.xrdp.enable = true;
   #services.xrdp.defaultWindowManager = "gnome-session";
-  services.xrdp.defaultWindowManager = "${pkgs.gnome.gnome-session}/bin/gnome-session";
+  services.xrdp.defaultWindowManager = "${pkgs.gnome-session}/bin/gnome-session";
   services.xrdp.openFirewall = true;
   # Disable the GNOME3/GDM auto-suspend feature that cannot be disabled in GUI!
   # If no user is logged in, the machine will power down after 20 minutes.

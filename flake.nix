@@ -16,7 +16,7 @@
           # Include your common configurations
           ./common
           # Include your hq-specific configurations
-          ./hq
+          ./hq/configuration.nix
           
           # This module sets any flake-specific items
           ({ ... }: {

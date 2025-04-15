@@ -2,7 +2,7 @@
   description = "Radshop's NixOS configurations";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     
     # Add Home Manager as a flake input
     home-manager = {

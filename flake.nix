@@ -30,6 +30,22 @@
         ];
         specialArgs = { inherit inputs; };
       };
+      nixt460 = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./t460/configuration.nix
+          ./common
+          
+          # Add Home Manager's NixOS module
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.miscguy = import ./t460/home.nix;
+          }
+        ];
+        specialArgs = { inherit inputs; };
+      };
     };
   };
 }

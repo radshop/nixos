@@ -121,6 +121,19 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
   services.avahi.enable = true;
+  services.avahi.nssmdns = true; # For network printer discovery
+
+  # Add the path to your custom printer drivers
+  services.printing.drivers = [
+    (import ~/nixos/pkgs/mfcj995dw {}).mfcj995dwlpr
+    (import ~/nixos/pkgs/mfcj995dw {}).mfcj995dwcupswrapper
+  ];
+
+  # For scanner support
+  hardware.sane.enable = true;
+  hardware.sane.extraBackends = [
+    (import ~/nixos/pkgs/mfcj995dw {}).brscan4
+  ];
 
   services.postgresql = {
     enable = true;

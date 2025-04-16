@@ -1,9 +1,8 @@
 {
   description = "Radshop's NixOS configurations";
-
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
-    brother-mfcj995dw.url = "path:/home/miscguy/nixos/pkgs/mfcj995dw";
+    #nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     
     # Add Home Manager as a flake input
     home-manager = {
@@ -12,14 +11,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-
   outputs = { self, nixpkgs, home-manager, ... }@inputs: {
     nixosConfigurations = {
       nixhq = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           ./hq/configuration.nix
-          brother-mfcj995dw.nixosModule
           ./common
           
           # Add Home Manager's NixOS module

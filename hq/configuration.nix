@@ -1,5 +1,11 @@
 { lib, config, pkgs, ... }:
 
+
+let
+  # Import the Brother printer drivers directly
+  # Adjust the path if necessary to point to your mfcj995dw directory
+  brotherPkgs = import ../pkgs/mfcj995dw { inherit pkgs; };
+in
 {
   imports =
     [ 
@@ -123,17 +129,15 @@
   services.avahi.enable = true;
   services.avahi.nssmdns = true; # For network printer discovery
 
-  # Add the path to your custom printer drivers
+  # Add the Brother drivers
   services.printing.drivers = [
-    (import ~/nixos/pkgs/mfcj995dw {}).mfcj995dwlpr
-    (import ~/nixos/pkgs/mfcj995dw {}).mfcj995dwcupswrapper
+    brotherPkgs.mfcj995dwlpr
+    brotherPkgs.mfcj995dwcupswrapper
   ];
-
-  # For scanner support
+  
+  # Enable scanning
   hardware.sane.enable = true;
-  hardware.sane.extraBackends = [
-    (import ~/nixos/pkgs/mfcj995dw {}).brscan4
-  ];
+  hardware.sane.extraBackends = [ brotherPkgs.brscan4 ];
 
   services.postgresql = {
     enable = true;

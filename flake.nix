@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    brother-mfcj995dw.url = "path:/home/miscguy/nixos/pkgs/mfcj995dw";
     
     # Add Home Manager as a flake input
     home-manager = {
@@ -18,6 +19,7 @@
         system = "x86_64-linux";
         modules = [
           ./hq/configuration.nix
+          brother-mfcj995dw.nixosModule
           ./common
           
           # Add Home Manager's NixOS module

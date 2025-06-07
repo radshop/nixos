@@ -152,6 +152,20 @@ sudo nixos-rebuild switch
 sudo nixos-rebuild switch --flake .#[hostname]
 ```
 
+## Quick Start
+
+1. Clone this repository
+2. Run the rebuild script for your system:
+   - `./rebuild-flake` for flakes-based rebuild (recommended)
+   - `./rebuild` for traditional rebuild
+   - System-specific scripts are auto-generated
+
+## Documentation
+
+- [VM Setup Guide](docs/VM_SETUP.md) - How to set up test VMs
+- [Upgrade Checklist](docs/UPGRADE_CHECKLIST.md) - Process for NixOS version upgrades
+- [Project Management](project_management.md) - Current tasks and status
+
 ## Best Practices
 
 1. Keep machine-specific configurations in the hostname directory

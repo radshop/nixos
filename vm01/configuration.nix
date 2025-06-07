@@ -8,23 +8,31 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      <home-manager/nixos>
       ../shared/services.nix
       ../shared/locale.nix
       ../shared/miscguy.nix
+      ../common/nix/flakes.nix
     ];
 
-  home-manager = {
-    users.miscguy = import ./home.nix;
-  };
-
-  # for vm guest 
+  # VM Guest optimizations
   services.spice-vdagentd.enable = true;
-
+  services.qemuGuest.enable = true;
+  services.xserver.videoDrivers = [ "qxl" ];
+  
+  # Reduce resource usage for VM
+  documentation.enable = false;
+  documentation.nixos.enable = false;
+  
+  # Faster boots in VM
+  boot.initrd.checkJournalingFS = false;
+  
+  # VM-specific packages
   environment.systemPackages = with pkgs; [
     libguestfs
     wget
     pv
+    spice-vdagent
+    qemu-utils
   ];
 
   # Bootloader.
@@ -32,7 +40,7 @@
   boot.loader.grub.device = "/dev/vda";
   boot.loader.grub.useOSProber = true;
 
-  networking.hostName = "nixVm01"; # Define your hostname.
+  networking.hostName = "nixvm01"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary

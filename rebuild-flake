@@ -9,7 +9,10 @@ HOSTNAME=$(hostname)
 flatpak update -y
 
 # Update flake inputs (replaces nix-channel --update)
-source ~/.config/nixos/secrets.env
+# Source secrets.env if it exists (for GitHub tokens, etc.)
+if [ -f ~/.config/nixos/secrets.env ]; then
+  source ~/.config/nixos/secrets.env
+fi
 nix flake update
 
 # Clean up old generations

@@ -1,17 +1,15 @@
 { lib, config, pkgs, ... }:
 
 {
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      <home-manager/nixos>
+      #<home-manager/nixos>
       ../shared/locale.nix
       ../shared/services.nix
       ../shared/misc_configuration.nix
       ../shared/miscguy.nix
+      ../common/nix/flakes.nix
     ];
 
   home-manager = {

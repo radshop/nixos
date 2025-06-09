@@ -1,12 +1,12 @@
 {
   description = "Radshop's NixOS configurations";
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     #nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     
     # Add Home Manager as a flake input
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       # This makes home-manager use the same nixpkgs as your system
       inputs.nixpkgs.follows = "nixpkgs";
     };

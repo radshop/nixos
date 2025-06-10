@@ -12,7 +12,7 @@
       ../shared/miscguy.nix
       ../shared/services.nix
       ../shared/locale.nix
-      #../common/nix/flakes.nix
+      ../common/nix/flakes.nix
     ];
 
   home-manager = {

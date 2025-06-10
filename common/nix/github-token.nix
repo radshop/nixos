@@ -1,7 +1,8 @@
 { config, lib, pkgs, ... }:
 
 {
-  systemd.services.nix-daemon.serviceConfig = {
+  # Only add the EnvironmentFile if it exists
+  systemd.services.nix-daemon.serviceConfig = lib.mkIf (builtins.pathExists "/home/${config.users.users.miscguy.name}/.config/nixos/secrets.env") {
     # Load environment variables from file
     EnvironmentFile = "/home/${config.users.users.miscguy.name}/.config/nixos/secrets.env";
   };

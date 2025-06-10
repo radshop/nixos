@@ -16,6 +16,7 @@
     google-chrome 
     libreoffice-fresh
     yt-dlp
+    remmina
     claude-code
   ];
 

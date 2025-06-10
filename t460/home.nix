@@ -17,6 +17,7 @@
     google-chrome 
     libreoffice-fresh
     yt-dlp
+    claude-code
   ];
 
 }

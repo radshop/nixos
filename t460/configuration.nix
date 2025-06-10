@@ -8,7 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      <home-manager/nixos>
+      #<home-manager/nixos>
       ../shared/miscguy.nix
       ../shared/services.nix
       ../shared/locale.nix

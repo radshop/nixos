@@ -12,7 +12,8 @@
   home.homeDirectory = "/home/miscguy";
   home.stateVersion = "25.05";
   home.packages = with pkgs; [
-    librewolf brave chromium
+    librewolf brave 
+    vivaldi
     google-chrome 
     libreoffice-fresh
     yt-dlp

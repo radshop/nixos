@@ -74,7 +74,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget
-    # fprintd # Disabled until fingerprint driver is fixed
+    fprintd
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -87,15 +87,15 @@
 
   # List services that you want to enable:
 
-  # Fingerprint reader disabled until libfprint-2-tod1-vfs0090 is fixed
-  # services.fprintd.enable = true;
-  # services.fprintd.tod.enable = true;
-  # services.fprintd.tod.driver = pkgs.libfprint-2-tod1-vfs0090;
+  # Enable fingerprint reader using pinned 24.11 version
+  services.fprintd.enable = true;
+  services.fprintd.tod.enable = true;
+  services.fprintd.tod.driver = pkgs.libfprint-2-tod1-vfs0090;
 
-  # Fingerprint authentication disabled
-  # security.pam.services.login.fprintAuth = lib.mkForce true;
-  # security.pam.services.sudo.fprintAuth = true;
-  # security.pam.services.gdm.fprintAuth = true;
+  # Enable fingerprint authentication
+  security.pam.services.login.fprintAuth = lib.mkForce true;
+  security.pam.services.sudo.fprintAuth = true;
+  security.pam.services.gdm.fprintAuth = true;
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;

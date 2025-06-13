@@ -4,6 +4,9 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     #nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     
+    # Add stable nixpkgs for fingerprint driver
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+    
     # Add Home Manager as a flake input
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
@@ -11,7 +14,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = { self, nixpkgs, home-manager, ... }@inputs: {
+  outputs = { self, nixpkgs, nixpkgs-stable, home-manager, ... }@inputs: {
     nixosConfigurations = {
       nixhq = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -41,6 +44,17 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.miscguy = import ./t460/home.nix;
+          }
+          
+          # Add fingerprint driver overlay
+          {
+            nixpkgs.overlays = [
+              (final: prev: {
+                # Import stable fingerprint packages
+                libfprint-2-tod1-vfs0090 = nixpkgs-stable.legacyPackages.${prev.system}.libfprint-2-tod1-vfs0090;
+                fprintd = nixpkgs-stable.legacyPackages.${prev.system}.fprintd;
+              })
+            ];
           }
         ];
         specialArgs = { inherit inputs; };

@@ -57,9 +57,16 @@ if [ $retval -eq 0 ]; then
   # Get current generation number
   gennbr="$(sudo nix-env --list-generations -p /nix/var/nix/profiles/system | grep current | awk '{print $1}')"
   
-  # Commit and push changes
-  msg="$SYSTEM_ARG: generation $gennbr"
-  run_cmd "git add ."
+  # Get optional commit description
+  if [ -n "$2" ]; then
+    desc="$2"
+    msg="$SYSTEM_ARG: generation $gennbr - $desc"
+  else
+    msg="$SYSTEM_ARG: generation $gennbr"
+  fi
+  
+  # Selectively commit relevant files for this system
+  run_cmd "git add flake.* ${SYSTEM_DIR}/* shared/* common/*"
   run_cmd "git commit -m \"$msg\""
   run_cmd "git push"
   
@@ -68,5 +75,15 @@ else
   echo "Build failed with error code $retval" | tee -a "$LOG_FILE"
   echo "--- Rebuild failed at $(date) ---" | tee -a "$LOG_FILE"
 fi
+
+# TODO: Future enhancements to consider:
+# 1. Add a recovery mechanism that can roll back to previous generation if tests fail
+#    - Create system-specific test scripts in each system directory
+#    - After rebuild, run tests and roll back if they fail
+#
+# 2. Implement a lock file mechanism to prevent multiple concurrent rebuilds
+#    - Create a lock file at the start of the script
+#    - Check for existing lock file and exit if one exists
+#    - Remove lock file on script completion or error
 
 echo "Log saved to $LOG_FILE"

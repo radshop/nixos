@@ -19,8 +19,8 @@ get_system_dir() {
 SYSTEM_DIR=$(get_system_dir "$SYSTEM_ARG")
 LOG_FILE="${SYSTEM_DIR}/rebuild.log"
 
-# Create log header
-echo "--- Rebuild started at $(date) for $SYSTEM_ARG ---" | tee "$LOG_FILE"
+# Create log header (overwrite previous log)
+echo "--- Rebuild started at $(date) for $SYSTEM_ARG ---" > "$LOG_FILE"
 
 # Function to run commands with output to both console and log
 run_cmd() {

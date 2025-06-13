@@ -67,8 +67,6 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-  # Allow broken packages for fingerprint reader
-  nixpkgs.config.allowBroken = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

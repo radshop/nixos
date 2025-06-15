@@ -8,7 +8,6 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      <home-manager/nixos>
       ../shared/locale.nix
       ../shared/services.nix
     ];
@@ -56,9 +55,6 @@
     # packages = with pkgs; [
     #   firefox librewolf brave chromium
     # ];
-  };
-  home-manager = {
-    users.miscguy = import ./home.nix;
   };
 
   security.sudo.extraRules = [

@@ -18,6 +18,7 @@
   
   # Temporary fix for kernel module issue during upgrade
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernel.enableUnusedModulesRemoval = false;
 
   networking.hostName = "nixt15g"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.

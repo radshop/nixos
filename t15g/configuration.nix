@@ -10,21 +10,24 @@
       ./hardware-configuration.nix
       ../shared/locale.nix
       ../shared/services.nix
+      ../shared/misc_configuration.nix
+      ../shared/miscguy.nix
+      ../common/nix/flakes.nix
     ];
+
+  home-manager = {
+    users.miscguy = import ./home.nix;
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   
   # Use stable kernel to avoid modules-shrunk issue
-  boot.kernelPackages = pkgs.linuxPackages_6_6;
+  # boot.kernelPackages = pkgs.linuxPackages_6_6;
 
   networking.hostName = "nixt15g"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -47,29 +50,6 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
-
-  users.groups.miscguy.members = [ "miscguy" ];
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.miscguy = {
-    isNormalUser = true;
-    description = "miscguy";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd" "docker" "miscguy"];
-    # packages = with pkgs; [
-    #   firefox librewolf brave chromium
-    # ];
-  };
-
-  security.sudo.extraRules = [
-    {
-      users = [ "miscguy" ];
-      commands = [
-        {
-          command = "ALL";
-          options = [ "SETENV" "NOPASSWD" ];
-        }
-      ];
-    }
-  ];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -146,7 +126,7 @@
     displayManager.gdm.enable = true;
     desktopManager.gnome.enable = true;
   };
-    services.displayManager.defaultSession = "gnome";
+  services.displayManager.defaultSession = "gnome";
 
 
   networking.extraHosts =

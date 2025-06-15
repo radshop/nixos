@@ -1,17 +1,18 @@
-{ lib, config, pkgs, ... }:
+# Edit this configuration file to define what should be installed on
+# your system.  Help is available in the configuration.nix(5) man page
+# and in the NixOS manual (accessible by running ‘nixos-help’).
+
+{ config, pkgs, lib, ... }:
 
 {
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      <home-manager/nixos>
-      ../shared/locale.nix
-      ../shared/services.nix
-      ../shared/misc_configuration.nix
+      #<home-manager/nixos>
       ../shared/miscguy.nix
+      ../shared/services.nix
+      ../shared/locale.nix
+      ../common/nix/flakes.nix
     ];
 
   home-manager = {
@@ -22,20 +23,31 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  boot.initrd.luks.devices."luks-50945b9d-f82b-4e4d-8c9c-9307fc990454".device = "/dev/disk/by-uuid/50945b9d-f82b-4e4d-8c9c-9307fc990454";
   networking.hostName = "nixt460"; # Define your hostname.
-  networking.nftables.enable = true;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # Enable the X11 windowing system.
+  services.xserver.enable = true;
+
+  # Enable the GNOME Desktop Environment.
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+
+  # Configure keymap in X11
+  services.xserver.xkb = {
+    layout = "us";
+    variant = "";
+  };
+
+  # Enable CUPS to print documents.
+  services.printing.enable = true;
+
   # Enable sound with pipewire.
-  # sound.enable = true;
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -50,6 +62,9 @@
     #media-session.enable = true;
   };
 
+  # Enable touchpad support (enabled default in most desktopManager).
+  # services.xserver.libinput.enable = true;
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -57,42 +72,8 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget
-    pv
-    calibre
-    xournalpp
-    pavucontrol
+    fprintd
   ];
-
-  virtualisation = {
-    docker = {
-      enable = true;
-    };
-  };
-
-  # ssh keyring
-  programs.sway.extraSessionCommands = ''
-      eval $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh);
-      export SSH_AUTH_SOCK;
-  '';
-
-  services.fprintd = {
-    enable = true;
-    tod.enable = true;
-    tod.driver = pkgs.libfprint-2-tod1-vfs0090;
-  };
-
-  services.xserver = {
-    # Configure keymap in X11
-    xkb.layout = "us";
-    xkb.variant = "";
-    # Enable the X11 windowing system.
-    enable = true;
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
-  };
-  services.displayManager.defaultSession = "gnome";
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.libinput.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -103,6 +84,16 @@
   # };
 
   # List services that you want to enable:
+
+  # Enable fingerprint reader using pinned 24.11 version
+  services.fprintd.enable = true;
+  services.fprintd.tod.enable = true;
+  services.fprintd.tod.driver = pkgs.libfprint-2-tod1-vfs0090;
+
+  # Enable fingerprint authentication
+  security.pam.services.login.fprintAuth = lib.mkForce true;
+  security.pam.services.sudo.fprintAuth = true;
+  security.pam.services.gdm.fprintAuth = true;
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
@@ -119,5 +110,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.05"; # Did you read the comment?
+  system.stateVersion = "25.05"; # Did you read the comment?
+
 }

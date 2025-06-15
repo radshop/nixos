@@ -2,34 +2,123 @@
 # NixOS rebuild script using flakes
 # Automatically uses the current hostname as the system name
 
-# Get current hostname to use with flake
-HOSTNAME=$(hostname)
+# Parse arguments
+FULL_UPDATE=false
+COMMIT_MSG=""
+SYSTEM_ARG=""
 
-# Update flatpak packages
-flatpak update -y
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --full)
+      FULL_UPDATE=true
+      shift
+      ;;
+    *)
+      if [ -z "$SYSTEM_ARG" ]; then
+        SYSTEM_ARG="$1"
+      else
+        COMMIT_MSG="$1"
+      fi
+      shift
+      ;;
+  esac
+done
 
-# Update flake inputs (replaces nix-channel --update)
-source ~/.config/nixos/secrets.env
-nix flake update
+# Get current hostname to use with flake if not specified
+if [ -z "$SYSTEM_ARG" ]; then
+  SYSTEM_ARG=$(hostname)
+fi
 
-# Clean up old generations
-sudo nix-env --delete-generations 60d
-sudo nix-collect-garbage --delete-older-than 60d
+# Check for --full parameter
+FULL=0
+for arg in "$@"; do
+  if [ "$arg" = "--full" ]; then
+    FULL=1
+  fi
+done
 
-# Rebuild the system using flakes
-sudo nixos-rebuild switch --flake ".#$HOSTNAME"
+# Map hostnames to directory names
+get_system_dir() {
+  case "$1" in
+    "nixt460") echo "t460" ;;
+    "nixhq") echo "hq" ;;
+    "nixt15g") echo "t15g" ;;
+    *) echo "$1" ;;  # Default to the name itself
+  esac
+}
+
+SYSTEM_DIR=$(get_system_dir "$SYSTEM_ARG")
+LOG_FILE="${SYSTEM_DIR}/rebuild.log"
+
+# Create log header (overwrite previous log)
+echo "--- Rebuild started at $(date) for $SYSTEM_ARG ---" > "$LOG_FILE"
+
+# Function to run commands with output to both console and log
+run_cmd() {
+  echo "Running: $1" | tee -a "$LOG_FILE"
+  eval "$1" 2>&1 | tee -a "$LOG_FILE"
+  return ${PIPESTATUS[0]}
+}
+
+# Run flatpak update and cleanup only if --full is specified
+if [ $FULL -eq 1 ]; then
+  echo "Running full update (including flatpak and garbage collection)..." | tee -a "$LOG_FILE"
+  # Update flatpak packages
+  run_cmd "flatpak update -y"
+
+  # Update flake inputs (replaces nix-channel --update)
+  # Source secrets.env if it exists (for GitHub tokens, etc.)
+  if [ -f ~/.config/nixos/secrets.env ]; then
+    source ~/.config/nixos/secrets.env
+  fi
+  run_cmd "nix flake update"
+
+  # Clean up old generations
+  run_cmd "sudo nix-env --delete-generations 60d"
+  run_cmd "sudo nix-collect-garbage --delete-older-than 60d"
+fi
+
+# Always rebuild the system using flakes
+echo "Building system configuration for $SYSTEM_ARG..." | tee -a "$LOG_FILE"
+run_cmd "sudo nixos-rebuild switch --flake \".#$SYSTEM_ARG\""
 retval=$?
 
 if [ $retval -eq 0 ]; then
+  echo "Build successful! Committing changes..." | tee -a "$LOG_FILE"
+  
   # Pull any remote changes first
-  git pull
+  run_cmd "git pull"
   
   # Get current generation number
   gennbr="$(sudo nix-env --list-generations -p /nix/var/nix/profiles/system | grep current | awk '{print $1}')"
   
-  # Commit and push changes
-  msg="$HOSTNAME: generation $gennbr"
-  git add .
-  git commit -m "$msg" 
-  git push
+  # Use commit message if provided
+  if [ -n "$COMMIT_MSG" ]; then
+    msg="$SYSTEM_ARG: generation $gennbr - $COMMIT_MSG"
+  else
+    msg="$SYSTEM_ARG: generation $gennbr"
+  fi
+  
+  # Log completion before committing
+  echo "--- Rebuild completed successfully at $(date) ---" | tee -a "$LOG_FILE"
+  
+  # Selectively commit relevant files for this system
+  run_cmd "git add flake.* ${SYSTEM_DIR}/* shared/* common/* \"$LOG_FILE\""
+  run_cmd "git commit -m \"$msg\""
+  run_cmd "git push"
+else
+  echo "Build failed with error code $retval" | tee -a "$LOG_FILE"
+  echo "--- Rebuild failed at $(date) ---" | tee -a "$LOG_FILE"
 fi
+
+# TODO: Future enhancements to consider:
+# 1. Add a recovery mechanism that can roll back to previous generation if tests fail
+#    - Create system-specific test scripts in each system directory
+#    - After rebuild, run tests and roll back if they fail
+#
+# 2. Implement a lock file mechanism to prevent multiple concurrent rebuilds
+#    - Create a lock file at the start of the script
+#    - Check for existing lock file and exit if one exists
+#    - Remove lock file on script completion or error
+
+echo "Log saved to $LOG_FILE"

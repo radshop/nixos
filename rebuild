@@ -1,18 +1,110 @@
 #! /bin/sh
 # NOTE: calling sudo inside a script is not best practice, but it works in this case
-flatpak update -y
-sudo nix-channel --update
-sudo nix-env --delete-generations 60d
-sudo nix-collect-garbage --delete-older-than 60d
-sudo nixos-rebuild switch
-retval=$?
-if [ $retval == 0 ]; then
-  pushd /home/miscguy/nixos
-  git pull
-  gennbr="$(sudo nix-env --list-generations -p /nix/var/nix/profiles/system | grep current | awk '{print $1}')"
-  msg="$HOSTNAME: generation $gennbr"
-  git add .
-  git commit -m "$msg" 
-  git push
-  popd
+
+# Parse arguments
+FULL_UPDATE=false
+COMMIT_MSG=""
+SYSTEM_ARG=""
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --full)
+      FULL_UPDATE=true
+      shift
+      ;;
+    *)
+      if [ -z "$SYSTEM_ARG" ]; then
+        SYSTEM_ARG="$1"
+      else
+        COMMIT_MSG="$1"
+      fi
+      shift
+      ;;
+  esac
+done
+
+# Get current hostname if not specified
+if [ -z "$SYSTEM_ARG" ]; then
+  SYSTEM_ARG=$(hostname)
 fi
+
+# Check for --full parameter
+FULL=0
+for arg in "$@"; do
+  if [ "$arg" = "--full" ]; then
+    FULL=1
+  fi
+done
+
+# Map hostnames to directory names
+get_system_dir() {
+  case "$1" in
+    "nixt460") echo "t460" ;;
+    "nixhq") echo "hq" ;;
+    "nixt15g") echo "t15g" ;;
+    *) echo "$1" ;;  # Default to the name itself
+  esac
+}
+
+SYSTEM_DIR=$(get_system_dir "$SYSTEM_ARG")
+LOG_FILE="${SYSTEM_DIR}/rebuild.log"
+
+# Create log header (overwrite previous log)
+echo "--- Rebuild started at $(date) for $SYSTEM_ARG ---" > "$LOG_FILE"
+
+echo "Rebuilding system $SYSTEM_ARG..." | tee -a "$LOG_FILE"
+
+# Run flatpak update and cleanup only if --full is specified
+if [ $FULL -eq 1 ]; then
+  echo "Running full update (including flatpak and garbage collection)..." | tee -a "$LOG_FILE"
+  flatpak update -y 2>&1 | tee -a "$LOG_FILE"
+  sudo nix-channel --update 2>&1 | tee -a "$LOG_FILE"
+  sudo nix-env --delete-generations 60d 2>&1 | tee -a "$LOG_FILE"
+  sudo nix-collect-garbage --delete-older-than 60d 2>&1 | tee -a "$LOG_FILE"
+fi
+
+# Always rebuild the system
+sudo nixos-rebuild switch 2>&1 | tee -a "$LOG_FILE"
+retval=$?
+
+if [ $retval -eq 0 ]; then
+  echo "Build successful! Committing changes..." | tee -a "$LOG_FILE"
+  pushd /home/miscguy/coding/nixos
+  git pull 2>&1 | tee -a "$LOG_FILE"
+  
+  # Get current generation number
+  gennbr="$(sudo nix-env --list-generations -p /nix/var/nix/profiles/system | grep current | awk '{print $1}')"
+  
+  # Use commit message if provided
+  if [ -n "$COMMIT_MSG" ]; then
+    msg="$SYSTEM_ARG: generation $gennbr - $COMMIT_MSG"
+  else
+    msg="$SYSTEM_ARG: generation $gennbr"
+  fi
+  
+  # Log is already written at this point
+  echo "--- Rebuild completed successfully at $(date) ---" | tee -a "$LOG_FILE"
+  
+  # Selectively commit relevant files for this system
+  git add flake.* ${SYSTEM_DIR}/* shared/* common/* "$LOG_FILE"
+  git commit -m "$msg" 2>&1 | tee -a "$LOG_FILE"
+  git push 2>&1 | tee -a "$LOG_FILE"
+  popd
+  
+  echo "Rebuild completed successfully!" | tee -a "$LOG_FILE"
+else
+  echo "Build failed with error code $retval" | tee -a "$LOG_FILE"
+  echo "--- Rebuild failed at $(date) ---" | tee -a "$LOG_FILE"
+fi
+
+echo "Log saved to $LOG_FILE"
+
+# TODO: Future enhancements to consider:
+# 1. Add a recovery mechanism that can roll back to previous generation if tests fail
+#    - Create system-specific test scripts in each system directory
+#    - After rebuild, run tests and roll back if they fail
+#
+# 2. Implement a lock file mechanism to prevent multiple concurrent rebuilds
+#    - Create a lock file at the start of the script
+#    - Check for existing lock file and exit if one exists
+#    - Remove lock file on script completion or error

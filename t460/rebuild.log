@@ -1,0 +1,20 @@
+--- Rebuild started at Sun Jun 15 08:46:46 AM PDT 2025 for nixt460 ---
+Building system configuration for nixt460...
+Running: sudo nixos-rebuild switch --flake ".#nixt460"
+warning: Git tree '/home/miscguy/coding/nixos' is dirty
+building the system configuration...
+warning: Git tree '/home/miscguy/coding/nixos' is dirty
+activating the configuration...
+setting up /etc...
+reloading user units for miscguy...
+restarting sysinit-reactivation.target
+the following new units were started: NetworkManager-dispatcher.service
+Done. The new configuration is /nix/store/a77mma8sn5p6xx2plmwav8iwbx3ml8rf-nixos-system-nixt460-25.05.20250612.fd48718
+Build successful! Committing changes...
+Running: git pull
+hostkeys_find_by_key_hostfile: hostkeys_foreach failed for /home/miscguy/.ssh/known_hosts: Permission denied
+Failed to add the host to the list of known hosts (/home/miscguy/.ssh/known_hosts).
+client_input_hostkeys: hostkeys_foreach failed for /home/miscguy/.ssh/known_hosts: Permission denied
+Already up to date.
+--- Rebuild completed successfully at Sun Jun 15 08:47:17 AM PDT 2025 ---
+Running: git add flake.* t460/* shared/* common/* "t460/rebuild.log"

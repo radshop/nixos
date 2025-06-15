@@ -8,27 +8,31 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      <home-manager/nixos>
       ../shared/locale.nix
       ../shared/services.nix
+      ../shared/misc_configuration.nix
+      ../shared/miscguy.nix
+      ../common/nix/flakes.nix
     ];
+
+  home-manager = {
+    users.miscguy = import ./home.nix;
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  
+  # Use stable kernel to avoid modules-shrunk issue
+  # boot.kernelPackages = pkgs.linuxPackages_6_6;
 
   networking.hostName = "nixt15g"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
   networking.networkmanager.enable = true;
 
   # Enable sound with pipewire.
-  sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -47,32 +51,6 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  users.groups.miscguy.members = [ "miscguy" ];
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.miscguy = {
-    isNormalUser = true;
-    description = "miscguy";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd" "docker" "miscguy"];
-    # packages = with pkgs; [
-    #   firefox librewolf brave chromium
-    # ];
-  };
-  home-manager = {
-    users.miscguy = import ./home.nix;
-  };
-
-  security.sudo.extraRules = [
-    {
-      users = [ "miscguy" ];
-      commands = [
-        {
-          command = "ALL";
-          options = [ "SETENV" "NOPASSWD" ];
-        }
-      ];
-    }
-  ];
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -86,6 +64,7 @@
     calibre
     xournalpp
     wireplumber
+    claude-code
   ];
 
   virtualisation = {
@@ -132,22 +111,26 @@
     xkb.variant = "";
     # Enable the X11 windowing system.
     enable = true;
-    # displaylink
+    # Enable DisplayLink
     videoDrivers = [ "displaylink" "modesetting" ];
-    displayManager.sessionCommands = ''
-      ${lib.getBin pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
+    
+    # DisplayLink configuration
+    displayManager.setupCommands = ''
+      ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 1 0
+      ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
     '';
-		# XFCE
-    # desktopManager = {
-    #   xterm.enable = false;
-    #   xfce.enable = true;
-    # };
-    # displayManager.defaultSession = "xfce";
     # Enable the GNOME Desktop Environment.
     displayManager.gdm.enable = true;
-    displayManager.defaultSession = "gnome";
     desktopManager.gnome.enable = true;
   };
+  services.displayManager.defaultSession = "gnome";
+
+  # DisplayLink configuration
+  systemd.services.dlm.wantedBy = [ "multi-user.target" ];
+  nixpkgs.config.displaylink = {
+    enable = true;
+  };
+
 
   networking.extraHosts =
     ''

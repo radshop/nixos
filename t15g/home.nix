@@ -6,13 +6,14 @@
     ../shared/tmux.nix  
     ../shared/git.nix  
     ../shared/bash.nix  
+    ../shared/firefox.nix
   ];
   home.username = "miscguy";
   home.homeDirectory = "/home/miscguy";
-  home.stateVersion = "23.11";
-  nixpkgs.config.allowUnfree = true;
+  home.stateVersion = "25.05";
   home.packages = with pkgs; [
-    firefox librewolf brave chromium
+    librewolf brave chromium
+    vivaldi
     #logseq
     vlc
     libreoffice-fresh

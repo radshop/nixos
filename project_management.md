@@ -61,6 +61,22 @@
 
 ## Recent Activity
 
+### 2025-06-09 - Fixed nix-daemon error with flakes on t460
+- **Issue:** nix-daemon service was failing to start when flakes were enabled
+  - Error: `nix-daemon.service: Failed to load environment files: No such file or directory`
+  - Occurred on both NixOS 24.11 and 25.05
+  - Caused by missing `secrets.env` file required in `github-token.nix`
+- **Solution:** Modified `common/nix/github-token.nix` to make the environment file optional
+  - Used `lib.mkIf (builtins.pathExists "...")` to only add the EnvironmentFile if it exists
+  - This prevents the nix-daemon from failing when the file is missing
+  - Allows flakes to work on systems without GitHub token configuration
+- **Changes:**
+  1. Updated `common/nix/github-token.nix` to check if secrets.env exists before requiring it
+  2. Re-enabled flakes in `t460/configuration.nix`
+- **Next Steps:**
+  - Test rebuild on t460 with flakes enabled
+  - Consider similar conditional checks for other configuration files that might not exist on all systems
+
 ### Last Session
 - Cloned repository
 - Added to master project

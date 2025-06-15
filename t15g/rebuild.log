@@ -1,22 +1,18 @@
---- Rebuild started at Sat Jun 14 11:36:32 PM PDT 2025 for nixt15g ---
+--- Rebuild started at Sat Jun 14 11:43:45 PM PDT 2025 for nixt15g ---
 Building system configuration for nixt15g...
 Running: sudo nixos-rebuild switch --flake ".#nixt15g"
 warning: Git tree '/home/miscguy/nixos' is dirty
 building the system configuration...
 warning: Git tree '/home/miscguy/nixos' is dirty
-stopping the following units: accounts-daemon.service, systemd-modules-load.service
-NOT restarting the following changed units: display-manager.service
+evaluation warning: The option `hardware.pulseaudio' defined in `/nix/store/5bgspfpb428pfc3mx7h15sv341wnkha2-source/t15g/configuration.nix' has been renamed to `services.pulseaudio'.
 activating the configuration...
 setting up /etc...
 reloading user units for miscguy...
 restarting sysinit-reactivation.target
-reloading the following units: dbus.service
-restarting the following units: polkit.service, systemd-udevd.service
-starting the following units: accounts-daemon.service, systemd-modules-load.service
-the following new units were started: dlm.service, NetworkManager-dispatcher.service
-Done. The new configuration is /nix/store/ygi5cm5vacdymxgnxnb5fi6wf6lgcafj-nixos-system-nixt15g-25.05.20250612.fd48718
+the following new units were started: NetworkManager-dispatcher.service, sysinit-reactivation.target, systemd-tmpfiles-resetup.service
+Done. The new configuration is /nix/store/d6d22qm8q1d7mbhm7mja6vy542jvpg87-nixos-system-nixt15g-25.05.20250612.fd48718
 Build successful! Committing changes...
 Running: git pull
 Already up to date.
---- Rebuild completed successfully at Sat Jun 14 11:36:47 PM PDT 2025 ---
+--- Rebuild completed successfully at Sat Jun 14 11:44:02 PM PDT 2025 ---
 Running: git add flake.* t15g/* shared/* common/* "t15g/rebuild.log"

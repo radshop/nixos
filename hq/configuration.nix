@@ -81,6 +81,7 @@ in
     gnome-session
     gnome-remote-desktop
     xrdp
+    claude-code
   ];
 
 

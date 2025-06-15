@@ -145,11 +145,15 @@
     # Enable DisplayLink
     videoDrivers = [ "displaylink" "modesetting" ];
     
-    # DisplayLink configuration
-    displayManager.setupCommands = ''
-      ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 1 0
+    # DisplayLink configuration - try simpler approach with sessionCommands
+    displayManager.sessionCommands = ''
       ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
     '';
+    # Commented out setupCommands that may be causing issues
+    # displayManager.setupCommands = ''
+    #   ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 1 0
+    #   ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
+    # '';
 		# XFCE
     # desktopManager = {
     #   xterm.enable = false;

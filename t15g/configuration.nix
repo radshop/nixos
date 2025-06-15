@@ -19,9 +19,9 @@
   # Use stable kernel to avoid modules-shrunk issue
   boot.kernelPackages = pkgs.linuxPackages_6_6;
   
-  # Disabled DisplayLink kernel modules temporarily
-  # boot.kernelModules = [ "evdi" ];
-  # boot.extraModulePackages = with config.boot.kernelPackages; [ evdi ];
+  # DisplayLink kernel modules
+  boot.kernelModules = [ "evdi" ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ evdi ];
 
   networking.hostName = "nixt15g"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -77,6 +77,11 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  
+  # DisplayLink configuration
+  nixpkgs.config.displaylink = {
+    enable = true;
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -129,22 +134,22 @@
     '';
   };
   services.onedrive.enable = true;
-  # Disabled DisplayLink service temporarily
-  # systemd.services.dlm.wantedBy = [ "multi-user.target" ];
+  # Enable DisplayLink service 
+  systemd.services.dlm.wantedBy = [ "multi-user.target" ];
   services.xserver = {
     # Configure keymap in X11
     xkb.layout = "us";
     xkb.variant = "";
     # Enable the X11 windowing system.
     enable = true;
-    # Temporarily disable DisplayLink
-    videoDrivers = [ "modesetting" ];
+    # Enable DisplayLink
+    videoDrivers = [ "displaylink" "modesetting" ];
     
-    # DisplayLink configuration - commented out for now
-    # displayManager.setupCommands = ''
-    #   ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 1 0
-    #   ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
-    # '';
+    # DisplayLink configuration
+    displayManager.setupCommands = ''
+      ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 1 0
+      ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
+    '';
 		# XFCE
     # desktopManager = {
     #   xterm.enable = false;
@@ -182,12 +187,12 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
   
-  # Udev rules for DisplayLink devices - commented out for now
-  # services.udev.extraRules = ''
-  #   # DisplayLink USB devices
-  #   SUBSYSTEM=="usb", ATTR{idVendor}=="17e9", MODE="0666"
-  #   KERNEL=="card[0-9]*", SUBSYSTEM=="drm", ATTRS{vendor}=="0x17e9", TAG+="seat", TAG+="master-of-seat"
-  # '';
+  # Udev rules for DisplayLink devices
+  services.udev.extraRules = ''
+    # DisplayLink USB devices
+    SUBSYSTEM=="usb", ATTR{idVendor}=="17e9", MODE="0666"
+    KERNEL=="card[0-9]*", SUBSYSTEM=="drm", ATTRS{vendor}=="0x17e9", TAG+="seat", TAG+="master-of-seat"
+  '';
 
   system.autoUpgrade.enable = true;
   system.autoUpgrade.allowReboot = true;

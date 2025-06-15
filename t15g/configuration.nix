@@ -94,6 +94,28 @@
     xournalpp
     wireplumber
     claude-code
+    # DisplayLink reset script for recovery from black screens
+    (writeShellScriptBin "displaylink-reset" ''
+      #!/bin/bash
+      echo "Restarting DisplayLink..."
+      
+      # Restart the DisplayLink service
+      sudo systemctl restart dlm
+      sleep 2
+      
+      # Reload the evdi module
+      sudo modprobe -r evdi
+      sleep 1
+      sudo modprobe evdi
+      sleep 2
+      
+      # Reconfigure displays
+      export DISPLAY=:0
+      ${xorg.xrandr}/bin/xrandr --setprovideroutputsource 1 0 || true
+      ${xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0 || true
+      
+      echo "DisplayLink reset complete"
+    '')
   ];
 
   virtualisation = {
@@ -134,8 +156,20 @@
     '';
   };
   services.onedrive.enable = true;
-  # Enable DisplayLink service 
-  systemd.services.dlm.wantedBy = [ "multi-user.target" ];
+  # Enhanced DisplayLink service configuration with better boot timing
+  systemd.services.dlm = {
+    wantedBy = [ "multi-user.target" ];
+    after = [ "multi-user.target" "systemd-logind.service" "systemd-modules-load.service" ];
+    before = [ "display-manager.service" ];
+    
+    serviceConfig = {
+      # Add retry and reload capability
+      Restart = "always";
+      RestartSec = lib.mkForce 3;
+      # Ensure evdi module is loaded before service starts
+      ExecStartPre = "${pkgs.kmod}/bin/modprobe evdi";
+    };
+  };
   services.xserver = {
     # Configure keymap in X11
     xkb.layout = "us";
@@ -145,15 +179,23 @@
     # Enable DisplayLink
     videoDrivers = [ "displaylink" "modesetting" ];
     
-    # DisplayLink configuration - try simpler approach with sessionCommands
-    displayManager.sessionCommands = ''
-      ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
+    # Enhanced DisplayLink configuration with wait and retry logic
+    displayManager.setupCommands = ''
+      # Wait for DisplayLink to be ready
+      for i in {1..10}; do
+        if ${pkgs.util-linux}/bin/lsmod | grep -q evdi; then
+          break
+        fi
+        sleep 1
+      done
+      
+      # Configure DisplayLink outputs with fallbacks
+      ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 1 0 || true
+      ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0 || true
+      
+      # Optional: Set a primary display to avoid black screen
+      ${pkgs.xorg.xrandr}/bin/xrandr --output eDP-1 --primary || true
     '';
-    # Commented out setupCommands that may be causing issues
-    # displayManager.setupCommands = ''
-    #   ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 1 0
-    #   ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
-    # '';
 		# XFCE
     # desktopManager = {
     #   xterm.enable = false;
@@ -191,12 +233,28 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
   
-  # Udev rules for DisplayLink devices
+  # Enhanced udev rules for DisplayLink devices with hot-plug support
   services.udev.extraRules = ''
     # DisplayLink USB devices
     SUBSYSTEM=="usb", ATTR{idVendor}=="17e9", MODE="0666"
     KERNEL=="card[0-9]*", SUBSYSTEM=="drm", ATTRS{vendor}=="0x17e9", TAG+="seat", TAG+="master-of-seat"
+    
+    # Restart DisplayLink service on USB events
+    SUBSYSTEM=="usb", ATTR{idVendor}=="17e9", ACTION=="add", RUN+="${pkgs.systemd}/bin/systemctl restart dlm.service"
+    SUBSYSTEM=="usb", ATTR{idVendor}=="17e9", ACTION=="remove", RUN+="${pkgs.systemd}/bin/systemctl restart dlm.service"
   '';
+  
+  # Hot-plug handler service
+  systemd.services.displaylink-hotplug = {
+    description = "DisplayLink Hot-plug Handler";
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = pkgs.writeShellScript "displaylink-hotplug" ''
+        sleep 2
+        systemctl restart dlm.service
+      '';
+    };
+  };
 
   system.autoUpgrade.enable = true;
   system.autoUpgrade.allowReboot = true;

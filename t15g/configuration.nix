@@ -128,11 +128,11 @@
     xkb.variant = "";
     # Enable the X11 windowing system.
     enable = true;
-    # displaylink
-    videoDrivers = [ "displaylink" "modesetting" ];
-    displayManager.sessionCommands = ''
-      ${lib.getBin pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
-    '';
+    # displaylink - commented out for upgrade
+    # videoDrivers = [ "displaylink" "modesetting" ];
+    # displayManager.sessionCommands = ''
+    #   ${lib.getBin pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
+    # '';
 		# XFCE
     # desktopManager = {
     #   xterm.enable = false;

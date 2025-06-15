@@ -144,9 +144,10 @@
     # displayManager.defaultSession = "xfce";
     # Enable the GNOME Desktop Environment.
     displayManager.gdm.enable = true;
-    displayManager.defaultSession = "gnome";
     desktopManager.gnome.enable = true;
   };
+    services.displayManager.defaultSession = "gnome";
+
 
   networking.extraHosts =
     ''

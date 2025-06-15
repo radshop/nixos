@@ -1,14 +1,19 @@
---- Rebuild started at Sat Jun 14 10:06:39 PM PDT 2025 for nixt15g ---
+--- Rebuild started at Sat Jun 14 10:42:33 PM PDT 2025 for nixt15g ---
 Building system configuration for nixt15g...
 Running: sudo nixos-rebuild switch --flake ".#nixt15g"
 warning: Git tree '/home/miscguy/nixos' is dirty
 building the system configuration...
 warning: Git tree '/home/miscguy/nixos' is dirty
+stopping the following units: accounts-daemon.service, systemd-modules-load.service
+NOT restarting the following changed units: display-manager.service
 activating the configuration...
 setting up /etc...
 reloading user units for miscguy...
 restarting sysinit-reactivation.target
-the following new units were started: NetworkManager-dispatcher.service
+reloading the following units: dbus.service
+restarting the following units: polkit.service, systemd-udevd.service
+starting the following units: accounts-daemon.service, systemd-modules-load.service
+the following new units were started: dlm.service, NetworkManager-dispatcher.service, sysinit-reactivation.target, systemd-tmpfiles-resetup.service
 Done. The new configuration is /nix/store/ygi5cm5vacdymxgnxnb5fi6wf6lgcafj-nixos-system-nixt15g-25.05.20250612.fd48718
 Build successful! Committing changes...
 Running: git pull

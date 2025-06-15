@@ -111,22 +111,25 @@
     xkb.variant = "";
     # Enable the X11 windowing system.
     enable = true;
-    # displaylink - commented out for upgrade
-    # videoDrivers = [ "displaylink" "modesetting" ];
-    # displayManager.sessionCommands = ''
-    #   ${lib.getBin pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
-    # '';
-		# XFCE
-    # desktopManager = {
-    #   xterm.enable = false;
-    #   xfce.enable = true;
-    # };
-    # displayManager.defaultSession = "xfce";
+    # Enable DisplayLink
+    videoDrivers = [ "displaylink" "modesetting" ];
+    
+    # DisplayLink configuration
+    displayManager.setupCommands = ''
+      ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 1 0
+      ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
+    '';
     # Enable the GNOME Desktop Environment.
     displayManager.gdm.enable = true;
     desktopManager.gnome.enable = true;
   };
   services.displayManager.defaultSession = "gnome";
+
+  # DisplayLink configuration
+  systemd.services.dlm.wantedBy = [ "multi-user.target" ];
+  nixpkgs.config.displaylink = {
+    enable = true;
+  };
 
 
   networking.extraHosts =

@@ -86,6 +86,7 @@
     calibre
     xournalpp
     wireplumber
+    claude-code
   ];
 
   virtualisation = {

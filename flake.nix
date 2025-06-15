@@ -59,6 +59,22 @@
         ];
         specialArgs = { inherit inputs; };
       };
+      nixt15g = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./t15g/configuration.nix
+          ./common
+          
+          # Add Home Manager's NixOS module
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.miscguy = import ./t15g/home.nix;
+          }
+        ];
+        specialArgs = { inherit inputs; };
+      };
     };
   };
 }

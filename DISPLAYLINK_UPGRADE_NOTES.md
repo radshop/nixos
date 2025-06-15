@@ -1,8 +1,8 @@
-# DisplayLink Upgrade Notes for nixhq
+# DisplayLink Upgrade Notes
 
 ## Current Configuration
 
-From `/home/miscguy/coding/nixos/hq/configuration.nix`:
+Used by both nixhq and nixt15g in their respective configuration.nix files:
 
 ```nix
 services.xserver = {
@@ -24,16 +24,17 @@ services.xserver = {
 
 ## Steps for DisplayLink After NixOS Upgrade
 
-1. **Download Latest DisplayLink Driver**
-   - Go to [DisplayLink Downloads](https://www.displaylink.com/downloads/ubuntu)
-   - Accept EULA and get the download link
-   - Current version is 6.1
+1. **Driver Versions Available**
+   - **Version 5.8**: Older stable version that may work better with some hardware
+   - **Version 6.1.1**: Latest version with newer features but may have compatibility issues
+   - Both versions pre-downloaded in `./common/displaylink_drivers/`
 
-2. **Add Driver to Nix Store**
-   ```bash
-   nix-prefetch-url --name displaylink-610.zip https://www.synaptics.com/sites/default/files/exe_files/2024-10/DisplayLink%20USB%20Graphics%20Software%20for%20Ubuntu6.1-EXE.zip
-   ```
-   - Note: Adjust filename and URL based on the latest version
+2. **Manual Driver Setup**
+   - The nix-prefetch-url method has proven unreliable
+   - Drivers are already downloaded to `./common/displaylink_drivers/`:
+     - `DisplayLink USB Graphics Software for Ubuntu5.8-EXE.zip`
+     - `DisplayLink USB Graphics Software for Ubuntu6.1.1-EXE.zip`
+   - Copy the appropriate driver to the Nix store manually if needed
 
 3. **Configuration Updates to Consider**
    - Ensure DLM service is enabled:
@@ -60,8 +61,13 @@ services.xserver = {
 - Use `xrandr --listproviders` to see if DisplayLink is recognized
 - Check system logs for any DisplayLink-related errors: `journalctl -u dlm`
 
+## Version Selection Strategy
+- **Try 5.8 first**: This is the stable version that has worked reliably in the past
+- **If 5.8 fails**: Try 6.1.1 which may have better support for newer kernels
+- Test on nixt15g (less critical system) before applying to nixhq
+
 ## Fallback Plan
 If DisplayLink doesn't work after upgrade:
-1. Try different version of the driver
+1. Try the other driver version (5.8 vs 6.1.1)
 2. Temporarily switch to non-DisplayLink monitor setup
 3. Consider using previous NixOS generation until fixed

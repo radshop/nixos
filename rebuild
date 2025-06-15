@@ -28,6 +28,14 @@ if [ -z "$SYSTEM_ARG" ]; then
   SYSTEM_ARG=$(hostname)
 fi
 
+# Check for --full parameter
+FULL=0
+for arg in "$@"; do
+  if [ "$arg" = "--full" ]; then
+    FULL=1
+  fi
+done
+
 # Map hostnames to directory names
 get_system_dir() {
   case "$1" in
@@ -39,24 +47,30 @@ get_system_dir() {
 }
 
 SYSTEM_DIR=$(get_system_dir "$SYSTEM_ARG")
+LOG_FILE="${SYSTEM_DIR}/rebuild.log"
 
-echo "Rebuilding system $SYSTEM_ARG..."
+# Create log header (overwrite previous log)
+echo "--- Rebuild started at $(date) for $SYSTEM_ARG ---" > "$LOG_FILE"
 
-# Only run full update tasks if --full flag is provided
-if [ "$FULL_UPDATE" = true ]; then
-  echo "Running full update (flatpak, nix channel, garbage collection)..."
-  flatpak update -y
-  sudo nix-channel --update
-  sudo nix-env --delete-generations 60d
-  sudo nix-collect-garbage --delete-older-than 60d
+echo "Rebuilding system $SYSTEM_ARG..." | tee -a "$LOG_FILE"
+
+# Run flatpak update and cleanup only if --full is specified
+if [ $FULL -eq 1 ]; then
+  echo "Running full update (including flatpak and garbage collection)..." | tee -a "$LOG_FILE"
+  flatpak update -y 2>&1 | tee -a "$LOG_FILE"
+  sudo nix-channel --update 2>&1 | tee -a "$LOG_FILE"
+  sudo nix-env --delete-generations 60d 2>&1 | tee -a "$LOG_FILE"
+  sudo nix-collect-garbage --delete-older-than 60d 2>&1 | tee -a "$LOG_FILE"
 fi
-sudo nixos-rebuild switch
+
+# Always rebuild the system
+sudo nixos-rebuild switch 2>&1 | tee -a "$LOG_FILE"
 retval=$?
 
 if [ $retval -eq 0 ]; then
-  echo "Build successful! Committing changes..."
+  echo "Build successful! Committing changes..." | tee -a "$LOG_FILE"
   pushd /home/miscguy/coding/nixos
-  git pull
+  git pull 2>&1 | tee -a "$LOG_FILE"
   
   # Get current generation number
   gennbr="$(sudo nix-env --list-generations -p /nix/var/nix/profiles/system | grep current | awk '{print $1}')"
@@ -68,16 +82,22 @@ if [ $retval -eq 0 ]; then
     msg="$SYSTEM_ARG: generation $gennbr"
   fi
   
+  # Log is already written at this point
+  echo "--- Rebuild completed successfully at $(date) ---" | tee -a "$LOG_FILE"
+  
   # Selectively commit relevant files for this system
-  git add flake.* ${SYSTEM_DIR}/* shared/* common/*
-  git commit -m "$msg" 
-  git push
+  git add flake.* ${SYSTEM_DIR}/* shared/* common/* "$LOG_FILE"
+  git commit -m "$msg" 2>&1 | tee -a "$LOG_FILE"
+  git push 2>&1 | tee -a "$LOG_FILE"
   popd
   
-  echo "Rebuild completed successfully!"
+  echo "Rebuild completed successfully!" | tee -a "$LOG_FILE"
 else
-  echo "Build failed with error code $retval"
+  echo "Build failed with error code $retval" | tee -a "$LOG_FILE"
+  echo "--- Rebuild failed at $(date) ---" | tee -a "$LOG_FILE"
 fi
+
+echo "Log saved to $LOG_FILE"
 
 # TODO: Future enhancements to consider:
 # 1. Add a recovery mechanism that can roll back to previous generation if tests fail

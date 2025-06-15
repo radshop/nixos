@@ -29,6 +29,14 @@ if [ -z "$SYSTEM_ARG" ]; then
   SYSTEM_ARG=$(hostname)
 fi
 
+# Check for --full parameter
+FULL=0
+for arg in "$@"; do
+  if [ "$arg" = "--full" ]; then
+    FULL=1
+  fi
+done
+
 # Map hostnames to directory names
 get_system_dir() {
   case "$1" in
@@ -52,8 +60,9 @@ run_cmd() {
   return ${PIPESTATUS[0]}
 }
 
-# Only run full update tasks if --full flag is provided
-if [ "$FULL_UPDATE" = true ]; then
+# Run flatpak update and cleanup only if --full is specified
+if [ $FULL -eq 1 ]; then
+  echo "Running full update (including flatpak and garbage collection)..." | tee -a "$LOG_FILE"
   # Update flatpak packages
   run_cmd "flatpak update -y"
 
@@ -69,7 +78,7 @@ if [ "$FULL_UPDATE" = true ]; then
   run_cmd "sudo nix-collect-garbage --delete-older-than 60d"
 fi
 
-# Rebuild the system using flakes
+# Always rebuild the system using flakes
 echo "Building system configuration for $SYSTEM_ARG..." | tee -a "$LOG_FILE"
 run_cmd "sudo nixos-rebuild switch --flake \".#$SYSTEM_ARG\""
 retval=$?
@@ -90,12 +99,13 @@ if [ $retval -eq 0 ]; then
     msg="$SYSTEM_ARG: generation $gennbr"
   fi
   
+  # Log completion before committing
+  echo "--- Rebuild completed successfully at $(date) ---" | tee -a "$LOG_FILE"
+  
   # Selectively commit relevant files for this system
-  run_cmd "git add flake.* ${SYSTEM_DIR}/* shared/* common/*"
+  run_cmd "git add flake.* ${SYSTEM_DIR}/* shared/* common/* \"$LOG_FILE\""
   run_cmd "git commit -m \"$msg\""
   run_cmd "git push"
-  
-  echo "--- Rebuild completed successfully at $(date) ---" | tee -a "$LOG_FILE"
 else
   echo "Build failed with error code $retval" | tee -a "$LOG_FILE"
   echo "--- Rebuild failed at $(date) ---" | tee -a "$LOG_FILE"

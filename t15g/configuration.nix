@@ -15,6 +15,9 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  
+  # Temporary fix for kernel module issue during upgrade
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking.hostName = "nixt15g"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.

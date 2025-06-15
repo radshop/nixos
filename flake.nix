@@ -72,6 +72,10 @@
             home-manager.useUserPackages = true;
             home-manager.users.miscguy = import ./t15g/home.nix;
           }
+          
+          # System-specific configuration
+          {
+          }
         ];
         specialArgs = { inherit inputs; };
       };

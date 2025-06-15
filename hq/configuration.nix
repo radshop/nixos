@@ -28,6 +28,10 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # DisplayLink kernel modules
+  boot.kernelModules = [ "evdi" ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ evdi ];
+
   networking.hostName = "nixhq"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -63,6 +67,11 @@ in
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # DisplayLink configuration
+  nixpkgs.config.displaylink = {
+    enable = true;
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -150,16 +159,22 @@ in
     '';
   };
   services.onedrive.enable = true;
+  
+  # Enable DisplayLink service
+  systemd.services.dlm.wantedBy = [ "multi-user.target" ];
   services.xserver = {
     # Configure keymap in X11
     xkb.layout = "us";
     xkb.variant = "";
     # Enable the X11 windowing system.
     enable = true;
-    # displaylink
+    # Enable DisplayLink
     videoDrivers = [ "displaylink" "modesetting" ];
-    displayManager.sessionCommands = ''
-      ${lib.getBin pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
+    
+    # DisplayLink configuration
+    displayManager.setupCommands = ''
+      ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 1 0
+      ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
     '';
     # Enable the GNOME Desktop Environment.
     displayManager.gdm.enable = true;
@@ -219,6 +234,13 @@ in
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+
+  # Udev rules for DisplayLink devices
+  services.udev.extraRules = ''
+    # DisplayLink USB devices
+    SUBSYSTEM=="usb", ATTR{idVendor}=="17e9", MODE="0666"
+    KERNEL=="card[0-9]*", SUBSYSTEM=="drm", ATTRS{vendor}=="0x17e9", TAG+="seat", TAG+="master-of-seat"
+  '';
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

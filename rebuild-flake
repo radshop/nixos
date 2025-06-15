@@ -2,9 +2,32 @@
 # NixOS rebuild script using flakes
 # Automatically uses the current hostname as the system name
 
-# Get current hostname to use with flake
-HOSTNAME=$(hostname)
-SYSTEM_ARG=${1:-$HOSTNAME}
+# Parse arguments
+FULL_UPDATE=false
+COMMIT_MSG=""
+SYSTEM_ARG=""
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --full)
+      FULL_UPDATE=true
+      shift
+      ;;
+    *)
+      if [ -z "$SYSTEM_ARG" ]; then
+        SYSTEM_ARG="$1"
+      else
+        COMMIT_MSG="$1"
+      fi
+      shift
+      ;;
+  esac
+done
+
+# Get current hostname to use with flake if not specified
+if [ -z "$SYSTEM_ARG" ]; then
+  SYSTEM_ARG=$(hostname)
+fi
 
 # Map hostnames to directory names
 get_system_dir() {
@@ -29,19 +52,22 @@ run_cmd() {
   return ${PIPESTATUS[0]}
 }
 
-# Update flatpak packages
-run_cmd "flatpak update -y"
+# Only run full update tasks if --full flag is provided
+if [ "$FULL_UPDATE" = true ]; then
+  # Update flatpak packages
+  run_cmd "flatpak update -y"
 
-# Update flake inputs (replaces nix-channel --update)
-# Source secrets.env if it exists (for GitHub tokens, etc.)
-if [ -f ~/.config/nixos/secrets.env ]; then
-  source ~/.config/nixos/secrets.env
+  # Update flake inputs (replaces nix-channel --update)
+  # Source secrets.env if it exists (for GitHub tokens, etc.)
+  if [ -f ~/.config/nixos/secrets.env ]; then
+    source ~/.config/nixos/secrets.env
+  fi
+  run_cmd "nix flake update"
+
+  # Clean up old generations
+  run_cmd "sudo nix-env --delete-generations 60d"
+  run_cmd "sudo nix-collect-garbage --delete-older-than 60d"
 fi
-run_cmd "nix flake update"
-
-# Clean up old generations
-run_cmd "sudo nix-env --delete-generations 60d"
-run_cmd "sudo nix-collect-garbage --delete-older-than 60d"
 
 # Rebuild the system using flakes
 echo "Building system configuration for $SYSTEM_ARG..." | tee -a "$LOG_FILE"
@@ -57,10 +83,9 @@ if [ $retval -eq 0 ]; then
   # Get current generation number
   gennbr="$(sudo nix-env --list-generations -p /nix/var/nix/profiles/system | grep current | awk '{print $1}')"
   
-  # Get optional commit description
-  if [ -n "$2" ]; then
-    desc="$2"
-    msg="$SYSTEM_ARG: generation $gennbr - $desc"
+  # Use commit message if provided
+  if [ -n "$COMMIT_MSG" ]; then
+    msg="$SYSTEM_ARG: generation $gennbr - $COMMIT_MSG"
   else
     msg="$SYSTEM_ARG: generation $gennbr"
   fi

@@ -146,7 +146,7 @@
     displayManager.gdm.enable = true;
     desktopManager.gnome.enable = true;
   };
-    services.displayManager.defaultSession = "gnome";
+  services.displayManager.defaultSession = "gnome";
 
 
   networking.extraHosts =

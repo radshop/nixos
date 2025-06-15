@@ -1,38 +1,22 @@
---- Rebuild started at Sat Jun 14 11:22:18 PM PDT 2025 for nixt15g ---
+--- Rebuild started at Sat Jun 14 11:36:32 PM PDT 2025 for nixt15g ---
 Building system configuration for nixt15g...
 Running: sudo nixos-rebuild switch --flake ".#nixt15g"
 warning: Git tree '/home/miscguy/nixos' is dirty
 building the system configuration...
 warning: Git tree '/home/miscguy/nixos' is dirty
-evaluation warning: miscguy profile: You have set either `nixpkgs.config` or `nixpkgs.overlays` while using `home-manager.useGlobalPkgs`.
-                    This will soon not be possible. Please remove all `nixpkgs` options when using `home-manager.useGlobalPkgs`.
-evaluation warning: The option `hardware.pulseaudio' defined in `/nix/store/5aa9cmb3d10x2a45ax7212kjwsd63310-source/t15g/configuration.nix' has been renamed to `services.pulseaudio'.
+stopping the following units: accounts-daemon.service, systemd-modules-load.service
+NOT restarting the following changed units: display-manager.service
 activating the configuration...
 setting up /etc...
 reloading user units for miscguy...
 restarting sysinit-reactivation.target
-the following new units were started: NetworkManager-dispatcher.service, sysinit-reactivation.target, systemd-tmpfiles-resetup.service
-Done. The new configuration is /nix/store/d6d22qm8q1d7mbhm7mja6vy542jvpg87-nixos-system-nixt15g-25.05.20250612.fd48718
+reloading the following units: dbus.service
+restarting the following units: polkit.service, systemd-udevd.service
+starting the following units: accounts-daemon.service, systemd-modules-load.service
+the following new units were started: dlm.service, NetworkManager-dispatcher.service
+Done. The new configuration is /nix/store/ygi5cm5vacdymxgnxnb5fi6wf6lgcafj-nixos-system-nixt15g-25.05.20250612.fd48718
 Build successful! Committing changes...
 Running: git pull
-error: Your local changes to the following files would be overwritten by merge:
-	rebuild
-	rebuild-flake
-	t15g/configuration.nix
-	t15g/rebuild.log
-Please commit your changes or stash them before you merge.
-Aborting
-Updating d770a74..10f457b
---- Rebuild completed successfully at Sat Jun 14 11:22:35 PM PDT 2025 ---
+Already up to date.
+--- Rebuild completed successfully at Sat Jun 14 11:36:47 PM PDT 2025 ---
 Running: git add flake.* t15g/* shared/* common/* "t15g/rebuild.log"
-Running: git commit -m "nixt15g: generation 66"
-[main bd7a130] nixt15g: generation 66
- 2 files changed, 14 insertions(+), 1769 deletions(-)
-Running: git push
-To github.com:radshop/nixos.git
- ! [rejected]        main -> main (non-fast-forward)
-error: failed to push some refs to 'github.com:radshop/nixos.git'
-hint: Updates were rejected because the tip of your current branch is behind
-hint: its remote counterpart. If you want to integrate the remote changes,
-hint: use 'git pull' before pushing again.
-hint: See the 'Note about fast-forwards' in 'git push --help' for details.

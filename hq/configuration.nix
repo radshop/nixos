@@ -28,10 +28,6 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # DisplayLink kernel modules
-  boot.kernelModules = [ "evdi" ];
-  boot.extraModulePackages = with config.boot.kernelPackages; [ evdi ];
-
   networking.hostName = "nixhq"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -68,10 +64,6 @@ in
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # DisplayLink configuration
-  nixpkgs.config.displaylink = {
-    enable = true;
-  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -161,8 +153,6 @@ in
   };
   services.onedrive.enable = true;
   
-  # Enable DisplayLink service
-  systemd.services.dlm.wantedBy = [ "multi-user.target" ];
   services.xserver = {
     # Configure keymap in X11
     xkb.layout = "us";
@@ -184,6 +174,15 @@ in
   services.displayManager = {
     defaultSession = "gnome";
   };
+  # DisplayLink configuration
+  systemd.services.dlm.wantedBy = [ "multi-user.target" ];
+  nixpkgs.config.displaylink = {
+    enable = true;
+  };
+  # DisplayLink kernel modules
+  # boot.kernelModules = [ "evdi" ];
+  # boot.extraModulePackages = with config.boot.kernelPackages; [ evdi ];
+
 
   #gnome remote desktop
   services.gnome.gnome-remote-desktop.enable = true;

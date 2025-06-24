@@ -20,9 +20,7 @@
     libreoffice-fresh
     thunderbird
     pdfarranger pdfsandwich
-    gimp-with-plugins
     yt-dlp
-    obs-studio
     sioyek
     conda
     bash-completion
@@ -31,6 +29,6 @@
     git-filter-repo
     unzip gzip rename
     appimage-run
-    id3v2
+    kitty
   ];
 }

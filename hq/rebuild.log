@@ -1,20 +1,71 @@
---- Rebuild started at Tue Jun 24 09:58:16 AM PDT 2025 for nixhq ---
+--- Rebuild started at Tue Jun 24 10:11:30 AM PDT 2025 for nixhq ---
 Building system configuration for nixhq...
 Running: sudo nixos-rebuild switch --flake ".#nixhq"
 warning: Git tree '/home/miscguy/nixos' is dirty
+unpacking 'github:NixOS/nixpkgs/4206c4cb56751df534751b058295ea61357bbbaa' into the Git cache...
+warning: updating lock file '"/home/miscguy/nixos/flake.lock"':
+• Added input 'nixpkgs-unstable':
+    'github:NixOS/nixpkgs/4206c4cb56751df534751b058295ea61357bbbaa?narHash=sha256-VLFNc4egNjovYVxDGyBYTrvVCgDYgENp5bVi9fPTDYc%3D' (2025-06-21)
+warning: Git tree '/home/miscguy/nixos' is dirty
 building the system configuration...
 warning: Git tree '/home/miscguy/nixos' is dirty
-evaluation warning: The option `services.avahi.nssmdns' defined in `/nix/store/f7ll9526n06z3liirvp8w3ljbrlcljbx-source/hq/configuration.nix' has been renamed to `services.avahi.nssmdns4'.
-evaluation warning: The option `hardware.pulseaudio' defined in `/nix/store/f7ll9526n06z3liirvp8w3ljbrlcljbx-source/hq/configuration.nix' has been renamed to `services.pulseaudio'.
-activating the configuration...
-setting up /etc...
-Setting GitHub token in nix.conf
-reloading user units for miscguy...
-restarting sysinit-reactivation.target
-the following new units were started: NetworkManager-dispatcher.service
-Done. The new configuration is /nix/store/ski0w18n5gmk950qm0lbprv17qmwnws9-nixos-system-nixhq-25.05.20250612.fd48718
-Build successful! Committing changes...
-Running: git pull
-Already up to date.
---- Rebuild completed successfully at Tue Jun 24 09:58:31 AM PDT 2025 ---
-Running: git add flake.* hq/* shared/* common/* "hq/rebuild.log"
+evaluation warning: The option `services.avahi.nssmdns' defined in `/nix/store/cava2f6bqcc98ap8f9arkwzhngcy5dyg-source/hq/configuration.nix' has been renamed to `services.avahi.nssmdns4'.
+evaluation warning: The option `hardware.pulseaudio' defined in `/nix/store/cava2f6bqcc98ap8f9arkwzhngcy5dyg-source/hq/configuration.nix' has been renamed to `services.pulseaudio'.
+error:
+       … while calling the 'head' builtin
+         at /nix/store/mdcn81lf3rqdqg54834irvxmqvvwjrns-source/lib/attrsets.nix:1534:13:
+         1533|           if length values == 1 || pred here (elemAt values 1) (head values) then
+         1534|             head values
+             |             ^
+         1535|           else
+
+       … while evaluating the attribute 'value'
+         at /nix/store/mdcn81lf3rqdqg54834irvxmqvvwjrns-source/lib/modules.nix:1084:7:
+         1083|     // {
+         1084|       value = addErrorContext "while evaluating the option `${showOption loc}':" value;
+             |       ^
+         1085|       inherit (res.defsFinal') highestPrio;
+
+       … while evaluating the option `system.build.toplevel':
+
+       … while evaluating definitions from `/nix/store/mdcn81lf3rqdqg54834irvxmqvvwjrns-source/nixos/modules/system/activation/top-level.nix':
+
+       … while evaluating the option `system.systemBuilderArgs':
+
+       … while evaluating definitions from `/nix/store/mdcn81lf3rqdqg54834irvxmqvvwjrns-source/nixos/modules/system/activation/activatable-system.nix':
+
+       … while evaluating the option `system.activationScripts.etc.text':
+
+       … while evaluating definitions from `/nix/store/mdcn81lf3rqdqg54834irvxmqvvwjrns-source/nixos/modules/system/etc/etc-activation.nix':
+
+       … while evaluating definitions from `/nix/store/mdcn81lf3rqdqg54834irvxmqvvwjrns-source/nixos/modules/system/etc/etc.nix':
+
+       … while evaluating the option `environment.etc.dbus-1.source':
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: Package ‘claude-code-1.0.30’ in /nix/store/si3k775n94ax09w3cjgc5hr2vjs84v7m-source/pkgs/by-name/cl/claude-code/package.nix:39 has an unfree license (‘unfree’), refusing to evaluate.
+
+       a) To temporarily allow unfree packages, you can use an environment variable
+          for a single invocation of the nix tools.
+
+            $ export NIXPKGS_ALLOW_UNFREE=1
+
+          Note: When using `nix shell`, `nix build`, `nix develop`, etc with a flake,
+                then pass `--impure` in order to allow use of environment variables.
+
+       b) For `nixos-rebuild` you can set
+         { nixpkgs.config.allowUnfree = true; }
+       in configuration.nix to override this.
+
+       Alternatively you can configure a predicate to allow specific packages:
+         { nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+             "claude-code"
+           ];
+         }
+
+       c) For `nix-env`, `nix-build`, `nix-shell` or any other Nix command you can add
+         { allowUnfree = true; }
+       to ~/.config/nixpkgs/config.nix.
+Build failed with error code 1
+--- Rebuild failed at Tue Jun 24 10:12:06 AM PDT 2025 ---

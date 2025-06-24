@@ -69,9 +69,10 @@ in {
         plugin = better-mouse-mode;
         extraConfig = ''
           set -g @scroll-speed-num-lines-per-scroll 3
-          set -g @scroll-down-exit-copy-mode "on"
+          set -g @scroll-down-exit-copy-mode "off"
           set -g @scroll-without-changing-pane "on"
           set -g @scroll-in-moused-over-pane "on"
+          set -g @emulate-scroll-for-no-mouse-alternate-buffer "on"
         '';
       }
       
@@ -107,13 +108,14 @@ in {
       bind-key -n C-S-c send-keys C-c
       
       # ===========================
-      # Mouse Scroll Auto Copy Mode  
+      # Mouse Behavior Configuration
       # ===========================
       
-      # Automatically enter copy mode when scrolling up
+      # Mouse wheel scrolls normally in terminal, scrolls in copy mode when active
+      # No automatic copy mode entry - use double-tap up arrow or explicit key binding
       bind-key -n WheelUpPane if-shell -F -t = "#{mouse_any_flag}" \
           "send-keys -M" \
-          "if -Ft= '#{pane_in_mode}' 'send-keys -M' 'select-pane -t=; copy-mode -e; send-keys -M'"
+          "if -Ft= '#{pane_in_mode}' 'send-keys -M' 'send-keys -M'"
       
       bind-key -n WheelDownPane select-pane -t= \; send-keys -M
       
@@ -246,8 +248,9 @@ in {
       bind-key -T copy-mode-vi / command-prompt -i -p "search down" "send -X search-forward-incremental \"%%%\""
       bind-key -T copy-mode-vi ? command-prompt -i -p "search up" "send -X search-backward-incremental \"%%%\""
       
-      # Copy mode mouse support
-      bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-selection-and-cancel
+      # Copy mode mouse support - allow selection without auto-cancel
+      # Use mouse to select text, then use 'y' to copy or Enter to copy
+      bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-selection
     '';
   };
 }

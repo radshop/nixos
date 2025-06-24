@@ -2,7 +2,9 @@
   description = "Radshop's NixOS configurations";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
-    #nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    
+    # Add unstable nixpkgs for specific packages
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     
     # Add stable nixpkgs for fingerprint driver
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
@@ -14,7 +16,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = { self, nixpkgs, nixpkgs-stable, home-manager, ... }@inputs: {
+  outputs = { self, nixpkgs, nixpkgs-stable, nixpkgs-unstable, home-manager, ... }@inputs: {
     nixosConfigurations = {
       nixhq = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -28,6 +30,16 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.miscguy = import ./hq/home.nix;
+          }
+          
+          # Add overlay to use unstable claude-code
+          {
+            nixpkgs.overlays = [
+              (final: prev: {
+                # Use claude-code from unstable channel
+                claude-code = nixpkgs-unstable.legacyPackages.${prev.system}.claude-code;
+              })
+            ];
           }
         ];
         specialArgs = { inherit inputs; };

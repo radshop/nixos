@@ -41,7 +41,7 @@ in
   # Enable sound with pipewire.
   # Remove sound.enable or set it to false if you had it set previously, as sound.enable is only meant for ALSA-based configurations
   # sound.enable = true;
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -129,7 +129,7 @@ in
   # Enable CUPS to print documents.
   services.printing.enable = true;
   services.avahi.enable = true;
-  services.avahi.nssmdns = true; # For network printer discovery
+  services.avahi.nssmdns4 = true; # For network printer discovery
 
   # Add the Brother drivers
   services.printing.drivers = [

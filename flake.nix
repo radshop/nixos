@@ -63,13 +63,20 @@
             home-manager.users.miscguy = import ./t460/home.nix;
           }
           
-          # Add fingerprint driver overlay
+          # Add fingerprint driver overlay and unstable claude-code
           {
             nixpkgs.overlays = [
-              (final: prev: {
+              (final: prev: let
+                unstable = import nixpkgs-unstable {
+                  system = prev.system;
+                  config.allowUnfree = true;
+                };
+              in {
                 # Import stable fingerprint packages
                 libfprint-2-tod1-vfs0090 = nixpkgs-stable.legacyPackages.${prev.system}.libfprint-2-tod1-vfs0090;
                 fprintd = nixpkgs-stable.legacyPackages.${prev.system}.fprintd;
+                # Use claude-code from unstable channel with unfree allowed
+                claude-code = unstable.claude-code;
               })
             ];
           }
@@ -90,8 +97,19 @@
             home-manager.users.miscguy = import ./t15g/home.nix;
           }
           
-          # System-specific configuration
+          # Add overlay to use unstable claude-code
           {
+            nixpkgs.overlays = [
+              (final: prev: let
+                unstable = import nixpkgs-unstable {
+                  system = prev.system;
+                  config.allowUnfree = true;
+                };
+              in {
+                # Use claude-code from unstable channel with unfree allowed
+                claude-code = unstable.claude-code;
+              })
+            ];
           }
         ];
         specialArgs = { inherit inputs; };

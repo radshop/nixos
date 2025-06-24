@@ -35,9 +35,14 @@
           # Add overlay to use unstable claude-code
           {
             nixpkgs.overlays = [
-              (final: prev: {
-                # Use claude-code from unstable channel
-                claude-code = nixpkgs-unstable.legacyPackages.${prev.system}.claude-code;
+              (final: prev: let
+                unstable = import nixpkgs-unstable {
+                  system = prev.system;
+                  config.allowUnfree = true;
+                };
+              in {
+                # Use claude-code from unstable channel with unfree allowed
+                claude-code = unstable.claude-code;
               })
             ];
           }

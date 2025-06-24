@@ -1,20 +1,20 @@
---- Rebuild started at Tue Jun 24 09:53:30 AM PDT 2025 for nixhq ---
+--- Rebuild started at Tue Jun 24 09:58:16 AM PDT 2025 for nixhq ---
 Building system configuration for nixhq...
 Running: sudo nixos-rebuild switch --flake ".#nixhq"
 warning: Git tree '/home/miscguy/nixos' is dirty
 building the system configuration...
 warning: Git tree '/home/miscguy/nixos' is dirty
-evaluation warning: The option `services.avahi.nssmdns' defined in `/nix/store/rpd2yr333lqyvsmbcyq0z4y38rv1svr6-source/hq/configuration.nix' has been renamed to `services.avahi.nssmdns4'.
-evaluation warning: The option `hardware.pulseaudio' defined in `/nix/store/rpd2yr333lqyvsmbcyq0z4y38rv1svr6-source/hq/configuration.nix' has been renamed to `services.pulseaudio'.
+evaluation warning: The option `services.avahi.nssmdns' defined in `/nix/store/f7ll9526n06z3liirvp8w3ljbrlcljbx-source/hq/configuration.nix' has been renamed to `services.avahi.nssmdns4'.
+evaluation warning: The option `hardware.pulseaudio' defined in `/nix/store/f7ll9526n06z3liirvp8w3ljbrlcljbx-source/hq/configuration.nix' has been renamed to `services.pulseaudio'.
 activating the configuration...
 setting up /etc...
 Setting GitHub token in nix.conf
 reloading user units for miscguy...
 restarting sysinit-reactivation.target
-the following new units were started: NetworkManager-dispatcher.service, sysinit-reactivation.target, systemd-tmpfiles-resetup.service
+the following new units were started: NetworkManager-dispatcher.service
 Done. The new configuration is /nix/store/ski0w18n5gmk950qm0lbprv17qmwnws9-nixos-system-nixhq-25.05.20250612.fd48718
 Build successful! Committing changes...
 Running: git pull
 Already up to date.
---- Rebuild completed successfully at Tue Jun 24 09:53:46 AM PDT 2025 ---
+--- Rebuild completed successfully at Tue Jun 24 09:58:31 AM PDT 2025 ---
 Running: git add flake.* hq/* shared/* common/* "hq/rebuild.log"

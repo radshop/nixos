@@ -29,13 +29,7 @@ if [ -z "$SYSTEM_ARG" ]; then
   SYSTEM_ARG=$(hostname)
 fi
 
-# Check for --full parameter
-FULL=0
-for arg in "$@"; do
-  if [ "$arg" = "--full" ]; then
-    FULL=1
-  fi
-done
+# Use the FULL_UPDATE variable set during argument parsing
 
 # Map hostnames to directory names
 get_system_dir() {
@@ -61,7 +55,7 @@ run_cmd() {
 }
 
 # Run flatpak update and cleanup only if --full is specified
-if [ $FULL -eq 1 ]; then
+if [ "$FULL_UPDATE" = "true" ]; then
   echo "Running full update (including flatpak and garbage collection)..." | tee -a "$LOG_FILE"
   # Update flatpak packages
   run_cmd "flatpak update -y"

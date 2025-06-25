@@ -73,6 +73,7 @@
   environment.systemPackages = with pkgs; [
     wget
     fprintd
+    claude-code
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

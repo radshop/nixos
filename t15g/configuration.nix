@@ -65,6 +65,11 @@
     xournalpp
     wireplumber
     claude-code
+    python3
+    python3Packages.pip
+    python3Packages.inotify
+    python3Packages.requests
+    python3Packages.flask
   ];
 
   virtualisation = {

@@ -2,6 +2,10 @@
 
 This repository contains my NixOS configurations for multiple systems. It uses a modular approach that works both with traditional NixOS configuration and with the newer flakes system.
 
+**Note**: In this documentation, `<nixos-repo>` refers to the location where you clone this repository:
+- On most systems: `~/nixos`
+- On nixhq: `~/coding/nixos`
+
 ## Repository Structure
 
 - **common/** - Shared configurations used across all systems
@@ -16,7 +20,7 @@ This repository contains my NixOS configurations for multiple systems. It uses a
 1. Install NixOS using the standard installer
 2. Clone this repository:
    ```bash
-   git clone https://github.com/radshop/nixos.git ~/nixos
+   git clone https://github.com/radshop/nixos.git <nixos-repo>
    ```
 3. Back up the existing configuration:
    ```bash
@@ -24,7 +28,7 @@ This repository contains my NixOS configurations for multiple systems. It uses a
    ```
 4. Symlink your repo to the NixOS configuration location:
    ```bash
-   sudo ln -s ~/nixos /etc/nixos
+   sudo ln -s <nixos-repo> /etc/nixos
    ```
 5. Create a symlink to your specific machine configuration:
    ```bash
@@ -40,7 +44,7 @@ This repository contains my NixOS configurations for multiple systems. It uses a
 
 1. Update the repository:
    ```bash
-   cd ~/nixos
+   cd <nixos-repo>
    git pull
    ```
 2. Rebuild your system:
@@ -59,7 +63,7 @@ The repository now includes flakes support. To enable flakes, the system must ha
 1. Install NixOS using the standard installer
 2. Clone this repository:
    ```bash
-   git clone https://github.com/radshop/nixos.git ~/nixos
+   git clone https://github.com/radshop/nixos.git <nixos-repo>
    ```
 3. Set up GitHub token for authentication (to avoid rate limiting):
    ```bash
@@ -69,12 +73,12 @@ The repository now includes flakes support. To enable flakes, the system must ha
    ```
 4. First, apply the basic configuration to enable flakes:
    ```bash
-   cd ~/nixos
+   cd <nixos-repo>
    sudo nixos-rebuild switch -I nixos-config=./[hostname]/configuration.nix
    ```
 5. Now you can use flakes for subsequent rebuilds:
    ```bash
-   cd ~/nixos
+   cd <nixos-repo>
    sudo nixos-rebuild switch --flake .#[hostname]
    ```
 
@@ -82,7 +86,7 @@ The repository now includes flakes support. To enable flakes, the system must ha
 
 1. Update the repository:
    ```bash
-   cd ~/nixos
+   cd <nixos-repo>
    git pull
    ```
 2. Update the flake lock file:

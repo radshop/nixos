@@ -35,3 +35,14 @@ Aborting
 Updating f134f9b..daceb15
 --- Rebuild completed successfully at Tue Jun 24 01:20:57 PM PDT 2025 ---
 Running: git add flake.* hq/* shared/* common/* "hq/rebuild.log"
+Running: git commit -m "nixhq: generation 380"
+[main 48d058e] nixhq: generation 380
+ 2 files changed, 32 insertions(+), 274 deletions(-)
+Running: git push
+To github.com:radshop/nixos.git
+ ! [rejected]        main -> main (non-fast-forward)
+error: failed to push some refs to 'github.com:radshop/nixos.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. If you want to integrate the remote changes,
+hint: use 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.

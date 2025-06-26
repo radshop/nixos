@@ -88,6 +88,7 @@ in
     python3Packages.inotify
     python3Packages.requests
     python3Packages.flask
+    python3Packages.pyyaml
   ];
 
 

@@ -30,5 +30,6 @@
     unzip gzip rename
     appimage-run
     kitty
+    sqlite
   ];
 }

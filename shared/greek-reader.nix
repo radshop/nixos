@@ -1,5 +1,11 @@
 { config, pkgs, ... }:
 
+let
+  pythonEnv = pkgs.python3.withPackages (ps: with ps; [
+    flask
+    gunicorn
+  ]);
+in
 {
   # Greek Text Reader service
   systemd.services.greek-reader = {
@@ -13,13 +19,13 @@
       Group = "users";
       WorkingDirectory = "/home/miscguy/coding/greek";
       # Bind to 0.0.0.0 for Tailscale access
-      ExecStart = "${pkgs.python312Packages.gunicorn}/bin/gunicorn --workers 4 --bind 0.0.0.0:5000 --timeout 120 --access-logfile /home/miscguy/coding/greek/logs/access.log --error-logfile /home/miscguy/coding/greek/logs/error.log --log-level info --chdir /home/miscguy/coding/greek/src/api app:app";
+      ExecStart = "${pythonEnv}/bin/gunicorn --workers 4 --bind 0.0.0.0:5000 --timeout 120 --access-logfile /home/miscguy/coding/greek/logs/access.log --error-logfile /home/miscguy/coding/greek/logs/error.log --log-level info --chdir /home/miscguy/coding/greek/src/api app:app";
       Restart = "always";
       RestartSec = 10;
       
       # Environment
       Environment = [
-        "PATH=${pkgs.python312}/bin:${pkgs.python312Packages.gunicorn}/bin"
+        "PATH=${pythonEnv}/bin"
         "PYTHONPATH=/home/miscguy/coding/greek/src/api"
       ];
     };

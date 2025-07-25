@@ -18,6 +18,7 @@ in
       #../shared/sql1-backup-permissions.nix
       ../common/nix/flakes.nix
       #../shared/nextcloud-server.nix
+      ../shared/greek-reader.nix
     ];
 
   home-manager = {
@@ -89,6 +90,7 @@ in
       requests
       flask
       pyyaml
+      gunicorn
     ]))
   ];
 

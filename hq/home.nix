@@ -32,5 +32,6 @@
     kitty
     sqlite
     python312Packages.gunicorn python312Packages.flask
+    qgis
   ];
 }

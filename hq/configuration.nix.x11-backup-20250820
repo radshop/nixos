@@ -178,11 +178,9 @@ in
     '';
     # Enable the GNOME Desktop Environment.
     displayManager.gdm.enable = true;
-    displayManager.gdm.wayland = true;  # Enable Wayland support in GDM
     desktopManager.gnome.enable = true;
   };
   services.displayManager = {
-    # Default to Wayland, but X11 remains available as fallback
     defaultSession = "gnome";
   };
   # DisplayLink configuration
@@ -194,15 +192,6 @@ in
   # boot.kernelModules = [ "evdi" ];
   # boot.extraModulePackages = with config.boot.kernelPackages; [ evdi ];
 
-  # Waydroid configuration
-  virtualisation.waydroid.enable = true;
-  
-  # Enable binder kernel module required by Waydroid
-  boot.kernelModules = [ "binder_linux" "ashmem_linux" ];
-  boot.extraModulePackages = with config.boot.kernelPackages; [ ];
-  
-  # Add kernel parameters for Waydroid
-  boot.kernelParams = [ "psi=1" ];
 
   #gnome remote desktop
   services.gnome.gnome-remote-desktop.enable = true;

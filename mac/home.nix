@@ -19,7 +19,7 @@
     enable = true;
     bashrcExtra = ''
       function conda-shell {
-          nix-shell ~/nixos/conda/conda-shell.nix
+          nix-shell ~/coding/nixos/conda/conda-shell.nix
       }
     '';
     # profileExtra = ''

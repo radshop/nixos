@@ -3,3 +3,6 @@ secrets/*
 
 
 **/.claude/settings.local.json
+
+# Machine-generated rebuild logs
+**/rebuild.log

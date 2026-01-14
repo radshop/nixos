@@ -86,7 +86,7 @@ if [ $retval -eq 0 ]; then
   echo "--- Rebuild completed successfully at $(date) ---" | tee -a "$LOG_FILE"
   
   # Selectively commit relevant files for this system
-  git add flake.* ${SYSTEM_DIR}/* shared/* common/* "$LOG_FILE"
+  git add flake.* ${SYSTEM_DIR}/* shared/* common/* 
   git commit -m "$msg" 2>&1 | tee -a "$LOG_FILE"
   git push 2>&1 | tee -a "$LOG_FILE"
   popd

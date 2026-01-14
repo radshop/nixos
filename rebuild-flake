@@ -97,7 +97,7 @@ if [ $retval -eq 0 ]; then
   echo "--- Rebuild completed successfully at $(date) ---" | tee -a "$LOG_FILE"
   
   # Selectively commit relevant files for this system
-  run_cmd "git add flake.* ${SYSTEM_DIR}/* shared/* common/* \"$LOG_FILE\""
+  run_cmd "git add flake.* ${SYSTEM_DIR}/* shared/* common/* "
   run_cmd "git commit -m \"$msg\""
   run_cmd "git push"
 else

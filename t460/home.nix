@@ -19,6 +19,7 @@
     yt-dlp
     remmina
     claude-code
+    anki
   ];
 
 }

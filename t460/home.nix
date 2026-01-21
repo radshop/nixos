@@ -20,6 +20,7 @@
     remmina
     claude-code
     anki
+    zoom-us
   ];
 
 }

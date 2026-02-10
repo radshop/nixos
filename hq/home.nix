@@ -34,5 +34,6 @@
     python312Packages.gunicorn python312Packages.flask
     qgis
     anki
+    simple-scan
   ];
 }

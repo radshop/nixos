@@ -145,8 +145,23 @@ in
     brotherPkgs.mfcj995dwlpr
     brotherPkgs.mfcj995dwcupswrapper
   ];
-  
-  # Enable scanning
+
+  # Brother driver binaries have hardcoded /opt/brother paths - create symlinks
+  systemd.tmpfiles.rules = [
+    # Printer driver symlinks
+    "d /opt/brother/Printers/mfcj995dw 0755 root root -"
+    "L+ /opt/brother/Printers/mfcj995dw/inf - - - - ${brotherPkgs.mfcj995dwlpr}/opt/brother/Printers/mfcj995dw/inf"
+    "L+ /opt/brother/Printers/mfcj995dw/lpd - - - - ${brotherPkgs.mfcj995dwlpr}/opt/brother/Printers/mfcj995dw/lpd"
+    # Scanner driver symlinks (brscan4)
+    "d /opt/brother/scanner 0755 root root -"
+    "L+ /opt/brother/scanner/brscan4 - - - - ${brotherPkgs.brscan4}/opt/brother/scanner/brscan4"
+    # Scanner config directory - library looks in /etc/opt/... for these
+    "d /etc/opt/brother/scanner/brscan4 0755 root root -"
+    "L+ /etc/opt/brother/scanner/brscan4/models4 - - - - ${brotherPkgs.brscan4}/opt/brother/scanner/brscan4/models4"
+    "L+ /etc/opt/brother/scanner/brscan4/Brsane4.ini - - - - ${brotherPkgs.brscan4}/opt/brother/scanner/brscan4/Brsane4.ini"
+  ];
+
+  # Enable scanning - use our patched brscan4
   hardware.sane.enable = true;
   hardware.sane.extraBackends = [ brotherPkgs.brscan4 ];
 
@@ -198,7 +213,7 @@ in
   virtualisation.waydroid.enable = true;
   
   # Enable binder kernel module required by Waydroid
-  boot.kernelModules = [ "binder_linux" "ashmem_linux" ];
+  boot.kernelModules = [ "binder_linux" "ashmem_linux" "usblp" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ ];
   
   # Add kernel parameters for Waydroid
@@ -260,6 +275,8 @@ in
     # DisplayLink USB devices
     SUBSYSTEM=="usb", ATTR{idVendor}=="17e9", MODE="0666"
     KERNEL=="card[0-9]*", SUBSYSTEM=="drm", ATTRS{vendor}=="0x17e9", TAG+="seat", TAG+="master-of-seat"
+    # Brother MFC-J995DW - scanner access for users in scanner group
+    SUBSYSTEM=="usb", ATTR{idVendor}=="04f9", MODE="0666", GROUP="scanner"
   '';
 
   # This value determines the NixOS release from which the default

@@ -35,6 +35,6 @@
     qgis
     anki
     simple-scan
-    transmission_4
+    transmission_4-gtk
   ];
 }

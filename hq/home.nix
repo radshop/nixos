@@ -35,5 +35,6 @@
     qgis
     anki
     simple-scan
+    transmission_4
   ];
 }

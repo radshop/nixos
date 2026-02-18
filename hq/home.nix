@@ -35,6 +35,5 @@
     qgis
     anki
     simple-scan
-    deluged
   ];
 }

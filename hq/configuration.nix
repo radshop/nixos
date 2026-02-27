@@ -165,6 +165,19 @@ in
   hardware.sane.enable = true;
   hardware.sane.extraBackends = [ brotherPkgs.brscan4 ];
 
+  # Anki sync server (accessible via Tailscale)
+  services.anki-sync-server = {
+    enable = true;
+    address = "0.0.0.0";
+    port = 27701;
+    users = [
+      {
+        username = "miscguy";
+        passwordFile = "/etc/anki-sync-password";
+      }
+    ];
+  };
+
   services.postgresql = {
     enable = true;
     authentication = pkgs.lib.mkForce ''

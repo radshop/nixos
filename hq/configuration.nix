@@ -84,6 +84,7 @@ in
     gnome-remote-desktop
     xrdp
     claude-code
+    gdal
     (python3.withPackages (ps: with ps; [
       pip
       inotify
@@ -91,6 +92,8 @@ in
       flask
       pyyaml
       gunicorn
+      geopandas
+      pyproj
     ]))
   ];
 

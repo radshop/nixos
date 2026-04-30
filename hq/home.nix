@@ -36,6 +36,6 @@
     anki
     simple-scan
     transmission_4-gtk
-    azure-cli
+    azure-cli bicep
   ];
 }

@@ -37,5 +37,6 @@
     simple-scan
     transmission_4-gtk
     azure-cli bicep
+    certbot
   ];
 }

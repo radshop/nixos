@@ -38,5 +38,6 @@
     transmission_4-gtk
     azure-cli bicep
     certbot openssl
+    nodejs
   ];
 }

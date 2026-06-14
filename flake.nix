@@ -1,17 +1,17 @@
 {
   description = "Radshop's NixOS configurations";
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     
     # Add unstable nixpkgs for specific packages
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     
     # Add stable nixpkgs for fingerprint driver
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
     
     # Add Home Manager as a flake input
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-26.05";
       # This makes home-manager use the same nixpkgs as your system
       inputs.nixpkgs.follows = "nixpkgs";
     };

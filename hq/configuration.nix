@@ -29,6 +29,9 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # MD RAID monitoring
+  boot.swraid.mdadmConf = "MAILADDR root";
+
   networking.hostName = "nixhq"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -106,6 +109,7 @@ in
     # libvirt/qemu/kvm enable
     libvirtd = {
       enable = true;
+      extraOptions = [ "--timeout" "0" ]; # disable 120s idle timeout that drops virt-manager
       qemu = {
         package = pkgs.qemu_kvm;
       };
@@ -118,8 +122,7 @@ in
   # dconf for kvm
   programs.dconf.enable = true;
 
-  # ssh keyring
-  programs.ssh.startAgent = true;
+  # ssh keyring - GNOME's gcr-ssh-agent handles this now
   programs.sway.extraSessionCommands = ''
       eval $(gnome-keyring-daemon --start --components=pkcs11,secrets,ssh);
       export SSH_AUTH_SOCK;
@@ -209,13 +212,14 @@ in
     '';
     # Enable the GNOME Desktop Environment.
     displayManager.gdm.enable = true;
-    displayManager.gdm.wayland = true;  # Enable Wayland support in GDM
     desktopManager.gnome.enable = true;
   };
   services.displayManager = {
     # Default to Wayland, but X11 remains available as fallback
     defaultSession = "gnome";
   };
+
+
   # DisplayLink configuration
   systemd.services.dlm.wantedBy = [ "multi-user.target" ];
   nixpkgs.config.displaylink = {

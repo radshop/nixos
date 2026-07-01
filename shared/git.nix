@@ -1,7 +1,7 @@
 {
   programs.git = {
     enable = true;
-    userName = "radshop";
-    userEmail = "myron@radshop.com";
+    settings.user.name = "radshop";
+    settings.user.email = "myron@radshop.com";
   };
 }

@@ -1,13 +1,14 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ 
-    ../shared/vim.nix  
-    ../shared/tmux.nix  
-    ../shared/git.nix  
-    ../shared/bash.nix  
+  imports = [
+    ../shared/vim.nix
+    ../shared/tmux.nix
+    ../shared/git.nix
+    ../shared/bash.nix
     ../shared/firefox.nix
   ];
+  programs.firefox.configPath = ".mozilla/firefox";
   home.username = "miscguy";
   home.homeDirectory = "/home/miscguy";
   home.stateVersion = "25.05";

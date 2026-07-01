@@ -90,10 +90,11 @@
 
   # List services that you want to enable:
 
-  # Fingerprint reader disabled - libfprint-2-tod1-vfs0090 marked broken in 26.05
-  # services.fprintd.enable = true;
-  # services.fprintd.tod.enable = true;
-  # services.fprintd.tod.driver = pkgs.libfprint-2-tod1-vfs0090;
+  # Fingerprint reader: this T460 has a Validity VFS5011 (USB 138a:0017),
+  # which is supported natively by open-source libfprint - no TOD driver needed.
+  # (The old libfprint-2-tod1-vfs0090 TOD driver was for the different VFS0090
+  # sensor and is marked broken in 26.05.)
+  services.fprintd.enable = true;
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;

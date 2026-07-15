@@ -87,6 +87,7 @@ in
     gnome-remote-desktop
     xrdp
     claude-code
+    mcp-nixos
     gdal
     (python3.withPackages (ps: with ps; [
       pip

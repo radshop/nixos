@@ -27,6 +27,7 @@
     python311Packages.argcomplete
     dbeaver-bin
     git-filter-repo
+    gh
     unzip gzip rename
     appimage-run
     kitty

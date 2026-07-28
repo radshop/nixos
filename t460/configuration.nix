@@ -34,8 +34,8 @@
   services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -72,7 +72,6 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget
-    fprintd
     claude-code
     python3
     python3Packages.pip
@@ -91,15 +90,11 @@
 
   # List services that you want to enable:
 
-  # Enable fingerprint reader using pinned 24.11 version
+  # Fingerprint reader: this T460 has a Validity VFS5011 (USB 138a:0017),
+  # which is supported natively by open-source libfprint - no TOD driver needed.
+  # (The old libfprint-2-tod1-vfs0090 TOD driver was for the different VFS0090
+  # sensor and is marked broken in 26.05.)
   services.fprintd.enable = true;
-  services.fprintd.tod.enable = true;
-  services.fprintd.tod.driver = pkgs.libfprint-2-tod1-vfs0090;
-
-  # Enable fingerprint authentication
-  security.pam.services.login.fprintAuth = lib.mkForce true;
-  security.pam.services.sudo.fprintAuth = true;
-  security.pam.services.gdm.fprintAuth = true;
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;

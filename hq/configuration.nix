@@ -39,6 +39,10 @@ in
   networking.networkmanager.enable = true;
   #systemd.network.enable = true;
 
+  # Trust the Tailscale interface: all services (RDP 3389, Anki 27701, etc.)
+  # are reachable over the tailnet without opening ports to the LAN.
+  networking.firewall.trustedInterfaces = [ "tailscale0" ];
+
   # for vm macvtap
   networking.dhcpcd.denyInterfaces = [ "macvtap0@*" ];
 
@@ -83,9 +87,7 @@ in
     sqlcmd
     cryptsetup sshfs
     pciutils
-    gnome-session
-    gnome-remote-desktop
-    xrdp
+    gnome-remote-desktop  # provides grdctl for RDP credential/remote-login setup
     claude-code
     mcp-nixos
     gdal
@@ -240,12 +242,23 @@ in
   # Add kernel parameters for Waydroid
   boot.kernelParams = [ "psi=1" ];
 
-  #gnome remote desktop
+  # Remote desktop: GNOME-native RDP (works on Wayland). Connect with Remmina
+  # over Tailscale. Enable "Desktop Sharing" once in
+  # Settings -> System -> Remote Desktop while physically at the machine.
+  # NOTE: xrdp intentionally disabled - it collides with gnome-remote-desktop
+  # on TCP 3389 (only one can bind the RDP port). RDP is exposed only on the
+  # tailscale0 interface via networking.firewall.trustedInterfaces below.
   services.gnome.gnome-remote-desktop.enable = true;
-  services.xrdp.enable = true;
-  #services.xrdp.defaultWindowManager = "gnome-session";
-  services.xrdp.defaultWindowManager = "${pkgs.gnome-session}/bin/gnome-session";
-  services.xrdp.openFirewall = true;
+  # Headless "Remote Login": enable the SYSTEM grd daemon (fresh GDM session over
+  # RDP, no console login needed). The gnome-remote-desktop module ships this
+  # system unit but leaves it disabled; NixOS won't let `grdctl --system rdp
+  # enable` create the enable symlink (/etc is read-only), so enable it here.
+  # One-time imperative setup (persists in /var/lib/gnome-remote-desktop, so it
+  # survives rebuilds):
+  #   sudo grdctl --system rdp set-tls-cert/-key <paths in that dir>
+  #   sudo grdctl --system rdp set-credentials   # gateway user+pass for GDM greeter
+  #   sudo grdctl --system rdp enable            # after this rebuild makes it work
+  systemd.services.gnome-remote-desktop.wantedBy = [ "graphical.target" ];
   # Disable the GNOME3/GDM auto-suspend feature that cannot be disabled in GUI!
   # If no user is logged in, the machine will power down after 20 minutes.
   systemd.targets.sleep.enable = false;

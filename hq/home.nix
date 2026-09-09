@@ -40,5 +40,6 @@
     azure-cli bicep
     certbot openssl
     nodejs
+    freecad
   ];
 }

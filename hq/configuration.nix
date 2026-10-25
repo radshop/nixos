@@ -234,7 +234,17 @@ in
 
   # Waydroid configuration
   virtualisation.waydroid.enable = true;
-  
+  # Kernel 6.18 ships without CONFIG_NETFILTER_XTABLES_LEGACY, so the
+  # iptables-legacy that waydroid-net.sh prefers can't load ip_tables and the
+  # container never starts. Point it at the nft-backed iptables instead.
+  virtualisation.waydroid.package = pkgs.waydroid.overrideAttrs (old: {
+    postPatch = (old.postPatch or "") + ''
+      substituteInPlace data/scripts/waydroid-net.sh \
+        --replace-fail 'iptables-legacy' 'iptables-nft' \
+        --replace-fail 'ip6tables-legacy' 'ip6tables-nft'
+    '';
+  });
+
   # Enable binder kernel module required by Waydroid
   boot.kernelModules = [ "binder_linux" "ashmem_linux" "usblp" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ ];

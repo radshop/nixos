@@ -34,7 +34,7 @@
             nixpkgs.overlays = [
               (final: prev: let
                 unstable = import nixpkgs-unstable {
-                  system = prev.system;
+                  system = prev.stdenv.hostPlatform.system;
                   config.allowUnfree = true;
                 };
               in {
@@ -65,7 +65,7 @@
             nixpkgs.overlays = [
               (final: prev: let
                 unstable = import nixpkgs-unstable {
-                  system = prev.system;
+                  system = prev.stdenv.hostPlatform.system;
                   config.allowUnfree = true;
                 };
               in {
@@ -96,7 +96,7 @@
             nixpkgs.overlays = [
               (final: prev: let
                 unstable = import nixpkgs-unstable {
-                  system = prev.system;
+                  system = prev.stdenv.hostPlatform.system;
                   config.allowUnfree = true;
                 };
               in {

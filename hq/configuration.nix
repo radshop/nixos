@@ -210,14 +210,14 @@ in
     
     # DisplayLink configuration
     displayManager.setupCommands = ''
-      ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 1 0
-      ${pkgs.xorg.xrandr}/bin/xrandr --setprovideroutputsource 2 0
+      ${pkgs.xrandr}/bin/xrandr --setprovideroutputsource 1 0
+      ${pkgs.xrandr}/bin/xrandr --setprovideroutputsource 2 0
     '';
-    # Enable the GNOME Desktop Environment.
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
   };
+  # Enable the GNOME Desktop Environment.
+  services.desktopManager.gnome.enable = true;
   services.displayManager = {
+    gdm.enable = true;
     # Default to Wayland, but X11 remains available as fallback
     defaultSession = "gnome";
   };

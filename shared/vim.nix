@@ -9,6 +9,7 @@
         vimoutliner
         vim-surround
         vim-obsession
+        vim-abolish
       ];
     settings = { ignorecase = true; };
     extraConfig = ''

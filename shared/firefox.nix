@@ -14,6 +14,8 @@
   programs = {
     firefox = {
       enable = true;
+      # Keep the pre-26.05 profile location; existing profiles live here.
+      configPath = ".mozilla/firefox";
       package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
         extraPolicies = {
           DisableTelemetry = true;

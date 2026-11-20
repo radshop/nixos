@@ -37,7 +37,7 @@
     anki
     simple-scan
     transmission_4-gtk
-    azure-cli bicep
+    azure-cli bicep powershell
     certbot openssl
     nodejs
     freecad
